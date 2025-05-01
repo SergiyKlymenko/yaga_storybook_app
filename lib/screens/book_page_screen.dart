@@ -62,119 +62,152 @@ class _BookPageScreenState extends State<BookPageScreen> {
           SafeArea(
             child: Column(
               children: [
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                  child: Row(
-                    children: [
-                      Builder(
-                        builder: (context) => Container(
-                          /* decoration: BoxDecoration(
-                            border: Border.all(
-                              color: Color.fromARGB(255, 77, 47, 20),
-                              width: 1,
-                            ),
-                            // shape: BoxShape.rectangle,
-                          ), */
-                          child: IconButton(
-                            icon: const Icon(
-                              Icons.menu,
-                              color: Color.fromARGB(255, 77, 59, 20),
-                              size: 32,
-                            ),
-                            onPressed: () => Scaffold.of(context).openDrawer(),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 12),
-                      Text(
-                        loc.appTitle,
-                        style: TextStyle(
-                          fontSize: width * 0.06,
-                          color: Color.fromARGB(255, 77, 47, 20),
-                          fontFamily: 'FairyFont1',
-                          shadows: [
-                            Shadow(
-                              blurRadius: 4,
-                              color: Color.fromARGB(133, 250, 244, 232),
-                              offset: Offset(2, 2),
-                            )
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Expanded(
-                  child: SingleChildScrollView(
-                    padding: EdgeInsets.only(
-                        left: width * 0.05, right: width * 0.05),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                if (!isIllustrationPage) ...[
+                  Padding(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    child: Row(
                       children: [
-                        Container(
-                          width: width * 0.08,
-                          height: width * 0.08,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            //color: Colors.amber[100],
-                            border: Border.all(
-                                color: Color.fromARGB(255, 77, 47, 20),
-                                width: 1),
-                          ),
-                          alignment: Alignment.center,
-                          child: Text(
-                            '${widget.pageNumber}',
-                            style: TextStyle(
-                              fontSize: width * 0.045,
-                              fontFamily: 'FairyFont1',
-                              color: Color.fromARGB(255, 77, 47, 20),
-                              fontWeight: FontWeight.bold,
+                        Builder(
+                          builder: (context) => Container(
+                            child: IconButton(
+                              icon: const Icon(
+                                Icons.menu,
+                                color: Color.fromARGB(255, 77, 59, 20),
+                                size: 32,
+                              ),
+                              onPressed: () =>
+                                  Scaffold.of(context).openDrawer(),
                             ),
                           ),
                         ),
-                        const SizedBox(height: 16),
-                        ...paragraphs.map((p) {
-                          if (p.trim().isEmpty) return SizedBox.shrink();
-                          final firstLetter = p.trim().substring(0, 1);
-                          final restText = p.trim().substring(1);
-
-                          return Padding(
-                            padding: const EdgeInsets.only(bottom: 16),
-                            child: Text.rich(
-                              TextSpan(
-                                children: [
-                                  WidgetSpan(
-                                    child: SizedBox(width: width * 0.05),
-                                  ),
-                                  TextSpan(
-                                    text: firstLetter,
-                                    style: TextStyle(
-                                      fontSize: width * 0.1,
-                                      fontFamily: 'FairyFont1',
-                                      color: Color.fromARGB(255, 104, 73, 61),
-                                      height: 1.5,
-                                    ),
-                                  ),
-                                  TextSpan(
-                                    text: restText,
-                                    style: TextStyle(
-                                      fontSize: width * 0.055,
-                                      fontFamily: 'FairyFont',
-                                      color: Colors.black,
-                                      height: 1.5,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              textAlign: TextAlign.justify,
-                            ),
-                          );
-                        }),
+                        const SizedBox(width: 12),
+                        Text(
+                          loc.appTitle,
+                          style: TextStyle(
+                            fontSize: width * 0.06,
+                            color: Color.fromARGB(255, 77, 47, 20),
+                            fontFamily: 'FairyFont1',
+                            shadows: [
+                              Shadow(
+                                blurRadius: 4,
+                                color: Color.fromARGB(133, 250, 244, 232),
+                                offset: Offset(2, 2),
+                              )
+                            ],
+                          ),
+                        ),
                       ],
                     ),
                   ),
-                ),
+                  Container(
+                    width: width * 0.08,
+                    height: width * 0.08,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                          color: Color.fromARGB(255, 77, 47, 20), width: 1),
+                    ),
+                    alignment: Alignment.center,
+                    child: Text(
+                      '${widget.pageNumber}',
+                      style: TextStyle(
+                        fontSize: width * 0.045,
+                        fontFamily: 'FairyFont1',
+                        color: Color.fromARGB(255, 77, 47, 20),
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                ] else ...[
+                  // Якщо фон картинка, відображаємо меню як кнопка з рисочками
+                  Padding(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    child: Row(
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                            color:
+                                Color.fromARGB(255, 87, 71, 41), // колір фону
+                            borderRadius: BorderRadius.circular(16),
+                            border: Border.all(
+                              color: const Color.fromARGB(
+                                  255, 255, 247, 224), // обводка
+                              width: 1,
+                            ),
+                          ),
+                          child: Builder(
+                            builder: (BuildContext context) {
+                              return IconButton(
+                                icon: const Icon(
+                                  Icons.menu, // заміни на іконку трьох рисочок
+                                  color: Colors.white,
+                                  size: 32,
+                                ),
+                                onPressed: () =>
+                                    Scaffold.of(context).openDrawer(),
+                              );
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+                if (!isIllustrationPage) ...[
+                  Expanded(
+                    child: SingleChildScrollView(
+                      padding: EdgeInsets.only(
+                          left: width * 0.05, right: width * 0.05),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          ...paragraphs.map((p) {
+                            if (p.trim().isEmpty) return SizedBox.shrink();
+                            final firstLetter = p.trim().substring(0, 1);
+                            final restText = p.trim().substring(1);
+
+                            return Padding(
+                              padding: const EdgeInsets.only(bottom: 16),
+                              child: Text.rich(
+                                TextSpan(
+                                  children: [
+                                    WidgetSpan(
+                                      child: SizedBox(width: width * 0.05),
+                                    ),
+                                    TextSpan(
+                                      text: firstLetter,
+                                      style: TextStyle(
+                                        fontSize: width * 0.1,
+                                        fontFamily: 'FairyFont1',
+                                        color: Color.fromARGB(255, 104, 73, 61),
+                                        height: 1.5,
+                                      ),
+                                    ),
+                                    TextSpan(
+                                      text: restText,
+                                      style: TextStyle(
+                                        fontSize: width * 0.055,
+                                        fontFamily: 'FairyFont',
+                                        color: Colors.black,
+                                        height: 1.5,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                textAlign: TextAlign.justify,
+                              ),
+                            );
+                          }),
+                        ],
+                      ),
+                    ),
+                  ),
+                ] else ...[
+                  SizedBox(height: height * 0.755),
+                ],
                 if (!isIllustrationPage)
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 8),
@@ -191,7 +224,20 @@ class _BookPageScreenState extends State<BookPageScreen> {
                         ],
                       ),
                       padding: const EdgeInsets.symmetric(horizontal: 8),
-                      child: AudioControls(audioAssetPath: audioPath),
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.volume_up,
+                            size: 36,
+                            color: Color.fromARGB(
+                                128, 77, 47, 20), // Напівпрозорий
+                          ),
+                          SizedBox(
+                              width: width *
+                                  0.20), // Проміжок між іконкою та контролем
+                          AudioControls(audioAssetPath: audioPath),
+                        ],
+                      ),
                     ),
                   ),
                 const SizedBox(height: 16),
@@ -203,26 +249,58 @@ class _BookPageScreenState extends State<BookPageScreen> {
                           : MainAxisAlignment.spaceBetween,
                       children: [
                         if (widget.pageNumber > 1)
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 16),
-                            child: ElevatedButton(
-                              style: _navButtonStyle(width),
-                              onPressed: () =>
-                                  _navigateToPage(widget.pageNumber - 1),
-                              child: Text(loc.previousPage),
+                          Expanded(
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 16),
+                              child: ElevatedButton(
+                                style: _navButtonStyle(width).copyWith(
+                                  backgroundColor: MaterialStateProperty.all(
+                                      Color.fromARGB(255, 87, 71, 41)),
+                                  elevation: MaterialStateProperty.all(6),
+                                  side: MaterialStateProperty.all(BorderSide(
+                                    color: const Color.fromARGB(
+                                        255, 255, 247, 224), // біла обводка
+                                    width: 2, // товщина обводки
+                                  )),
+                                  shadowColor: MaterialStateProperty.all(Colors
+                                      .white
+                                      .withOpacity(0.5)), // біла тінь
+                                ),
+                                onPressed: () =>
+                                    _navigateToPage(widget.pageNumber - 1),
+                                child: Icon(
+                                  Icons.arrow_back,
+                                  size: 30,
+                                ),
+                              ),
                             ),
                           ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 16),
-                          child: ElevatedButton(
-                            style: _navButtonStyle(width).copyWith(
-                              backgroundColor: MaterialStateProperty.all(
-                                  Color.fromARGB(255, 87, 71, 41)),
-                              elevation: MaterialStateProperty.all(6),
+                        Expanded(
+                          child: Padding(
+                            padding: widget.pageNumber == 1
+                                ? EdgeInsets.symmetric(horizontal: width * 0.25)
+                                : EdgeInsets.symmetric(horizontal: 16),
+                            child: ElevatedButton(
+                              style: _navButtonStyle(width).copyWith(
+                                backgroundColor: MaterialStateProperty.all(
+                                    Color.fromARGB(255, 87, 71, 41)),
+                                elevation: MaterialStateProperty.all(6),
+                                side: MaterialStateProperty.all(BorderSide(
+                                  color:
+                                      const Color.fromARGB(255, 255, 247, 224),
+                                  width: 2, // товщина обводки
+                                )),
+                                shadowColor: MaterialStateProperty.all(
+                                    Colors.white.withOpacity(0.5)), // біла тінь
+                              ),
+                              onPressed: () =>
+                                  _navigateToPage(widget.pageNumber + 1),
+                              child: Icon(
+                                Icons.arrow_forward,
+                                size: 30,
+                              ),
                             ),
-                            onPressed: () =>
-                                _navigateToPage(widget.pageNumber + 1),
-                            child: Text(loc.nextPage),
                           ),
                         ),
                       ],
@@ -249,7 +327,6 @@ class _BookPageScreenState extends State<BookPageScreen> {
 
   ButtonStyle _navButtonStyle(double width) {
     return ElevatedButton.styleFrom(
-      //backgroundColor: Colors.deepPurple,
       foregroundColor: Colors.white,
       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
       textStyle: TextStyle(
