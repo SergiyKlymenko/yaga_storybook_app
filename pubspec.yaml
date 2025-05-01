@@ -5,7 +5,11 @@ description: A fairy-tale style multilingual book app
 version: 1.0.0+1
 
 environment:
+<<<<<<< HEAD
   sdk: ">=3.1.0 <4.0.0"
+=======
+  sdk: ">=2.19.0 <4.0.0"
+>>>>>>> 72ddef7e37c5691751965c7817ac12ccced46b7b
 
 dependencies:
   flutter:
