@@ -37,11 +37,12 @@ class YagaStorybookApp extends StatelessWidget {
       theme: ThemeData(
         primaryColor: Colors.brown, // Ваш основний колір
         textTheme: TextTheme(
-          bodyText1: TextStyle(
+          bodyLarge: TextStyle(
               color:
-                  Colors.black), // Встановлює чорний колір для основного тексту
-          bodyText2: TextStyle(
-              color: Colors.black), // Встановлює чорний для другого типу тексту
+                  Colors.black), // Використовуємо bodyLarge замість bodyText1
+          bodyMedium: TextStyle(
+              color:
+                  Colors.black), // Використовуємо bodyMedium замість bodyText2
         ),
         buttonTheme: ButtonThemeData(
           buttonColor: Colors.black, // Колір кнопок
