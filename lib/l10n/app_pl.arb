@@ -1,0 +1,19 @@
+{
+  "@@locale": "pl",
+  "appTitle": "Kto Ukradł Moją Złość?",
+  "startReading": "Zacznij Czytać",
+  "aboutAuthor": "O autorze",
+  "faq": "Jak korzystać",
+  "coloring": "Kolorowanki",
+  "language": "Język",
+  "nextPage": "Następna strona",
+  "previousPage": "Poprzednia strona",
+  "playAudio": "Słuchaj",
+  "coloring": "Kolorowanki",
+  "print": "Drukuj",
+  "aboutAuthor": "O autorze",
+  "aboutAuthorText": "Ta aplikacja została stworzona z miłością do bajek i dzieci. Autor to czarodziej słów, który pragnie podarować Ci magiczne historie.",
+  "faq": "Jak korzystać?",
+  "faqText": "Aby rozpocząć czytanie, naciśnij 'Rozpocznij czytanie'. Aby zmienić język, użyj menu. Aby odsłuchać stronę, naciśnij ikonę głośnika.",
+  "home": "Strona główna"
+}
