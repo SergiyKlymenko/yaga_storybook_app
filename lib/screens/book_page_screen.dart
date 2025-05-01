@@ -28,6 +28,15 @@ class _BookPageScreenState extends State<BookPageScreen> {
         'assets/audio/$currentLang/audio_page${widget.pageNumber}.mp3';
     final currentLocale = Localizations.localeOf(context).languageCode;
     final text = _getPageText(widget.pageNumber, currentLocale);
+    final paragraphs = text
+        .split('\n\n')
+        .map((p) =>
+            '    ${p.trim()}') // 4 пробіли = візуальний ефект червоного рядка
+        .toList();
+
+    final size = MediaQuery.of(context).size;
+    final width = size.width;
+    final height = size.height;
 
     return Scaffold(
       drawer: StorybookDrawer(
@@ -45,7 +54,7 @@ class _BookPageScreenState extends State<BookPageScreen> {
           ),
           Positioned.fill(
             child: Container(
-              color: Colors.black.withOpacity(0.3),
+              color: Color.fromARGB(255, 255, 217, 173).withOpacity(0.0001),
             ),
           ),
           SafeArea(
@@ -57,24 +66,37 @@ class _BookPageScreenState extends State<BookPageScreen> {
                   child: Row(
                     children: [
                       Builder(
-                        builder: (context) => IconButton(
-                          icon: const Icon(Icons.menu,
-                              color: Color.fromARGB(255, 240, 228, 202),
-                              size: 32),
-                          onPressed: () => Scaffold.of(context).openDrawer(),
+                        builder: (context) => Container(
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: Color.fromARGB(
+                                  255, 77, 47, 20), // колір обводки
+                              width: 1, // товщина обводки
+                            ),
+                            shape:
+                                BoxShape.circle, // кругла рамка (опціонально)
+                          ),
+                          child: IconButton(
+                            icon: const Icon(
+                              Icons.menu,
+                              color: Color.fromARGB(255, 77, 47, 20),
+                              size: 32,
+                            ),
+                            onPressed: () => Scaffold.of(context).openDrawer(),
+                          ),
                         ),
                       ),
-                      const SizedBox(width: 8),
+                      const SizedBox(width: 12),
                       Text(
                         loc.appTitle,
-                        style: const TextStyle(
-                          fontSize: 22,
-                          color: Color.fromARGB(255, 240, 228, 202),
-                          fontFamily: 'FairyFont',
+                        style: TextStyle(
+                          fontSize: width * 0.06,
+                          color: Color.fromARGB(255, 77, 47, 20),
+                          fontFamily: 'FairyFont1',
                           shadows: [
                             Shadow(
                               blurRadius: 4,
-                              color: Colors.black54,
+                              color: Color.fromARGB(133, 250, 244, 232),
                               offset: Offset(2, 2),
                             )
                           ],
@@ -86,21 +108,47 @@ class _BookPageScreenState extends State<BookPageScreen> {
                 Expanded(
                   child: SingleChildScrollView(
                     padding: const EdgeInsets.all(24),
-                    child: Text(
-                      text,
-                      style: const TextStyle(
-                        fontSize: 20,
-                        color: Colors.white,
-                        fontFamily: 'FairyFont',
-                        height: 1.4,
-                        shadows: [
-                          Shadow(
-                            blurRadius: 2,
-                            color: Colors.black87,
-                            offset: Offset(1, 1),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: paragraphs.map((p) {
+                        if (p.trim().isEmpty) return SizedBox.shrink();
+                        final firstLetter = p.trim().substring(0, 1);
+                        final restText = p.trim().substring(1);
+
+                        return Padding(
+                          padding: const EdgeInsets.only(bottom: 16),
+                          child: Text.rich(
+                            TextSpan(
+                              children: [
+                                WidgetSpan(
+                                  child: SizedBox(
+                                      width:
+                                          width * 0.05), // візуальний відступ
+                                ),
+                                TextSpan(
+                                  text: firstLetter,
+                                  style: TextStyle(
+                                    fontSize: width * 0.1,
+                                    fontFamily: 'FairyFont1',
+                                    color: Color.fromARGB(255, 104, 73, 61),
+                                    height: 1.5,
+                                  ),
+                                ),
+                                TextSpan(
+                                  text: restText,
+                                  style: TextStyle(
+                                    fontSize: width * 0.055,
+                                    fontFamily: 'FairyFont',
+                                    color: Colors.black,
+                                    height: 1.5,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            textAlign: TextAlign.justify,
                           ),
-                        ],
-                      ),
+                        );
+                      }).toList(),
                     ),
                   ),
                 ),

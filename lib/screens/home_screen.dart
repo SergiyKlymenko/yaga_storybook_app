@@ -3,6 +3,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import 'package:lucide_icons/lucide_icons.dart';
 import '../providers/locale_provider.dart';
 import '../widgets/storybook_drawer.dart';
 import 'book_page_screen.dart';
@@ -29,8 +30,17 @@ class _HomeScreenState extends State<HomeScreen>
       while (mounted) {
         if (mounted) setState(() => _iconScale = 1.2);
         await Future.delayed(const Duration(milliseconds: 400));
+
         if (mounted) setState(() => _iconScale = 1.0);
         await Future.delayed(const Duration(milliseconds: 600));
+
+        if (mounted) setState(() => _iconScale = 1.2);
+        await Future.delayed(const Duration(milliseconds: 400));
+
+        if (mounted) setState(() => _iconScale = 1.0);
+        await Future.delayed(const Duration(milliseconds: 600));
+
+        await Future.delayed(const Duration(seconds: 5));
       }
     });
   }
@@ -54,6 +64,7 @@ class _HomeScreenState extends State<HomeScreen>
         onLanguageChanged: (locale) {
           Provider.of<LocaleProvider>(context, listen: false).setLocale(locale);
         },
+        isHomeScreen: true,
       ),
       body: Stack(
         fit: StackFit.expand,
@@ -66,8 +77,6 @@ class _HomeScreenState extends State<HomeScreen>
             child: Column(
               children: [
                 SizedBox(height: height * 0.02),
-
-                // Пульсуюча іконка меню
                 Align(
                   alignment: Alignment.topLeft,
                   child: Padding(
@@ -80,12 +89,26 @@ class _HomeScreenState extends State<HomeScreen>
                           return Transform.scale(
                             scale: scale,
                             child: IconButton(
-                              icon: const Icon(Icons.auto_awesome),
                               iconSize: width * 0.13,
-                              color: Colors.white,
+                              tooltip: 'Menu',
                               onPressed: () =>
                                   Scaffold.of(context).openDrawer(),
-                              tooltip: 'Menu',
+                              icon: Icon(
+                                Icons.auto_awesome,
+                                color: Colors.amber[400],
+                                shadows: const [
+                                  Shadow(
+                                    blurRadius: 16,
+                                    color: Colors.yellowAccent,
+                                    offset: Offset(0, 0),
+                                  ),
+                                  Shadow(
+                                    blurRadius: 32,
+                                    color: Colors.orangeAccent,
+                                    offset: Offset(0, 0),
+                                  ),
+                                ],
+                              ),
                             ),
                           );
                         },
@@ -93,10 +116,7 @@ class _HomeScreenState extends State<HomeScreen>
                     ),
                   ),
                 ),
-
                 SizedBox(height: height * 0.03),
-
-                // Заголовок
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: width * 0.05),
                   child: Text(
@@ -106,40 +126,19 @@ class _HomeScreenState extends State<HomeScreen>
                       fontSize: width * 0.13,
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
-                      fontFamily: 'FairyFont',
+                      fontFamily: 'FairyFont1',
                       shadows: const [
                         Shadow(
                           blurRadius: 8,
-                          color: Colors.black87,
+                          color: Color.fromARGB(221, 102, 42, 27),
                           offset: Offset(3, 3),
                         )
                       ],
                     ),
                   ),
                 ),
-
-                Spacer(flex: 4),
-
-                // Яскрава кнопка "Читати"
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFFFFC857), // теплий жовтий
-                    foregroundColor: Colors.brown[900],
-                    shadowColor: Colors.orangeAccent,
-                    elevation: 12,
-                    padding: EdgeInsets.symmetric(
-                      horizontal: width * 0.18,
-                      vertical: height * 0.025,
-                    ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(40),
-                    ),
-                    textStyle: TextStyle(
-                      fontSize: width * 0.06,
-                      fontFamily: 'FairyFont',
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
+                Spacer(flex: 6),
+                MagicReadButton(
                   onPressed: () {
                     Navigator.push(
                       context,
@@ -148,26 +147,8 @@ class _HomeScreenState extends State<HomeScreen>
                       ),
                     );
                   },
-                  child: Text(
-                    loc.startReading,
-                    style: TextStyle(
-                      fontSize: width * 0.085,
-                      fontFamily: 'FairyFont',
-                      fontWeight: FontWeight.bold,
-                      shadows: const [
-                        Shadow(
-                          blurRadius: 6,
-                          color: Colors.black45,
-                          offset: Offset(1, 3),
-                        )
-                      ],
-                    ),
-                  ),
                 ),
-
                 Spacer(flex: 3),
-
-                // Іконки соцмереж
                 Padding(
                   padding: EdgeInsets.only(bottom: height * 0.02),
                   child: Row(
@@ -236,5 +217,113 @@ class _HomeScreenState extends State<HomeScreen>
     } else {
       await launchUrl(webUri, mode: LaunchMode.externalApplication);
     }
+  }
+}
+
+class MagicReadButton extends StatefulWidget {
+  final VoidCallback onPressed;
+
+  const MagicReadButton({super.key, required this.onPressed});
+
+  @override
+  State<MagicReadButton> createState() => _MagicReadButtonState();
+}
+
+class _MagicReadButtonState extends State<MagicReadButton>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _glowAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 2),
+    )..repeat(reverse: true);
+
+    _glowAnimation = Tween<double>(begin: 0.4, end: 1.0).animate(
+      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
+    );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+
+    return AnimatedBuilder(
+      animation: _glowAnimation,
+      builder: (context, child) {
+        return GestureDetector(
+          onTap: widget.onPressed,
+          child: Container(
+            padding: EdgeInsets.symmetric(
+              vertical: width * 0.03,
+              horizontal: width * 0.08,
+            ),
+            decoration: BoxDecoration(
+              gradient: const LinearGradient(
+                colors: [Color(0xFFFFD700), Color(0xFFFFA500)],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+              borderRadius: BorderRadius.circular(50),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.amber.withOpacity(_glowAnimation.value),
+                  blurRadius: 20,
+                  spreadRadius: 2,
+                ),
+              ],
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(
+                  LucideIcons.wand,
+                  size: width * 0.09,
+                  color: Colors.white,
+                  shadows: const [
+                    Shadow(
+                      blurRadius: 8,
+                      color: Colors.orangeAccent,
+                      offset: Offset(0, 0),
+                    ),
+                    Shadow(
+                      blurRadius: 16,
+                      color: Color.fromARGB(255, 231, 54, 0),
+                      offset: Offset(0, 0),
+                    ),
+                  ],
+                ),
+                const SizedBox(width: 18),
+                Text(
+                  AppLocalizations.of(context)!.startReading,
+                  style: TextStyle(
+                    fontSize: width * 0.08,
+                    color: Color.fromARGB(255, 105, 57, 12),
+                    fontFamily: 'FairyFont',
+                    fontWeight: FontWeight.bold,
+                    shadows: const [
+                      Shadow(
+                        blurRadius: 4,
+                        color: Colors.black26,
+                        offset: Offset(2, 2),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
   }
 }

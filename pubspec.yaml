@@ -21,6 +21,8 @@ dependencies:
   path_provider: ^2.1.1
   share_plus: ^7.2.1
   flutter_dotenv: ^5.2.1
+  lucide_icons: ^0.257.0
+  flutter_svg: ^2.0.7
 
 dev_dependencies:
   flutter_test:
@@ -37,17 +39,23 @@ flutter:
   assets:
     - assets/images/
     - assets/audio/
+    - assets/icons/flags/
     - assets/icons/youtube.png
     - assets/icons/instagram.png
     - assets/icons/facebook.png
     - assets/coloring/
+    - .env
     
 
-fonts:
-  - family: FairyFont
-    fonts:
-      - asset: assets/fonts/Forum-Regular.ttf
+  fonts:
+    - family: FairyFont
+      fonts:
+        - asset: assets/fonts/Forum-Regular.ttf
 
-  - family: FairyFont1
-    fonts:
-      - asset: assets/fonts/Mak-ExtraBold.otf
+    - family: FairyFont1
+      fonts:
+        - asset: assets/fonts/Mak-ExtraBold.otf
+        
+    - family: FairyFont2
+      fonts:
+        - asset: assets/fonts/baloo-cyrillic.ttf    
