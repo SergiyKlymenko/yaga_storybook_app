@@ -18,7 +18,8 @@ final Map<String, Map<int, String>> pageTexts = {
     40: '''I żyli długo i szczęśliwie.''',
   },
   'az': {
-    1: 'Bir varmış, bir yoxmuş, bir qoca kişi və onun arvadı varmış...',
+    1: '''
+Budaqlarının vəhşi caynaqlara bənzədiyi və hətta küləklərin ayaq ucunda gezdiyi çox sıx bir meşədə Xo Nənə yaşayırdı. Onun toyuq ayaqları üzərindəki evi çəmənlikdə dayanmışdı. Evin xırıltılı səsi, əyri, hiyləgər gözlər kimi qıyıq pəncərələri və köhnə barıtdan daim asqıran damı var idi. Deyirdilər ki, qadının qazanları heç vaxt soyumur, süpürgəsi gecələr öz-özünə uçur, bir sözlə alfa canavarlar belə quyruğunu qısırdılar qorxudan. Ancaq az adam bilirdi ki, uşaqlıqda bu qorxulu cadugər adi bir qız olub - Xoşəda.''',
     2: 'Bir gün onlar turp əkiblər...',
     // ...
     40: 'Və onlar xoşbəxt yaşayıblar.',
