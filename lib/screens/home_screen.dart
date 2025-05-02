@@ -116,14 +116,14 @@ class _HomeScreenState extends State<HomeScreen>
                     ),
                   ),
                 ),
-                SizedBox(height: height * 0.03),
+                SizedBox(height: height * 0.001),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: width * 0.05),
                   child: Text(
                     loc.appTitle,
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      fontSize: width * 0.13,
+                      fontSize: width * 0.10,
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
                       fontFamily: 'FairyFont1',

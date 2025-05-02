@@ -15,5 +15,6 @@
   "aboutAuthorText": "Ta aplikacja została stworzona z miłością do bajek i dzieci. Autor to czarodziej słów, który pragnie podarować Ci magiczne historie.",
   "faq": "Jak korzystać?",
   "faqText": "Aby rozpocząć czytanie, naciśnij 'Rozpocznij czytanie'. Aby zmienić język, użyj menu. Aby odsłuchać stronę, naciśnij ikonę głośnika.",
-  "home": "Strona główna"
+  "home": "Strona główna",
+  "continueOnNextPage": "Ciąg dalszy na następnej stronie..."
 }
