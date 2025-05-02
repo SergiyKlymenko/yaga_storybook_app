@@ -70,7 +70,7 @@ class _HomeScreenState extends State<HomeScreen>
         fit: StackFit.expand,
         children: [
           Image.asset(
-            'assets/images/cover.jpg',
+            'assets/images/cover.png',
             fit: BoxFit.cover,
           ),
           SafeArea(

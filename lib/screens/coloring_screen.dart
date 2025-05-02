@@ -6,7 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/widgets.dart' as pw;
-import 'package:share/share.dart'; // Додаємо пакет для спільного доступу
+import 'package:share_plus/share_plus.dart';
 
 class ColoringScreen extends StatelessWidget {
   final List<String> coloringImages = [
@@ -18,17 +18,27 @@ class ColoringScreen extends StatelessWidget {
   ColoringScreen({super.key});
 
   Future<void> _shareImageAsPdf(BuildContext context, String imagePath) async {
-    final ByteData bytes = await rootBundle.load(imagePath);
-    final Uint8List imageData = bytes.buffer.asUint8List();
+    try {
+      final ByteData bytes = await rootBundle.load(imagePath);
+      final Uint8List imageData = bytes.buffer.asUint8List();
 
-    final pdfData = await _wrapImageAsPdf(imageData);
+      final pdfData = await _wrapImageAsPdf(imageData);
 
-    final outputDir = await getTemporaryDirectory();
-    final file = File('${outputDir.path}/coloring.pdf');
-    await file.writeAsBytes(pdfData);
+      final outputDir = await getTemporaryDirectory();
+      final file = File('${outputDir.path}/coloring.pdf');
+      await file.writeAsBytes(pdfData);
 
-    // Використовуємо пакет share для спільного доступу до файлу
-    Share.shareFiles([file.path], text: 'Розмальовка для друку!');
+      // Використовуємо XFile і shareXFiles
+      final xFile = XFile(file.path);
+      await Share.shareXFiles(
+        [xFile],
+        text: 'Розмальовка для друку!',
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Помилка при створенні PDF: $e')),
+      );
+    }
   }
 
   Future<Uint8List> _wrapImageAsPdf(Uint8List imageData) async {

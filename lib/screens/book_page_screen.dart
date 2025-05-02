@@ -346,7 +346,7 @@ class _BookPageScreenState extends State<BookPageScreen> {
   String _getBackgroundImage(int pageNumber) {
     final illustrationPages = _getIllustrationPages();
     if (illustrationPages.contains(pageNumber)) {
-      return 'assets/images/background_page$pageNumber.jpg';
+      return 'assets/images/background_page$pageNumber.png';
     } else {
       return 'assets/images/background_text.jpg';
     }
