@@ -137,7 +137,7 @@ class _HomeScreenState extends State<HomeScreen>
                     ),
                   ),
                 ),
-                Spacer(flex: 6),
+                Spacer(flex: 2),
                 MagicReadButton(
                   onPressed: () {
                     Navigator.push(
