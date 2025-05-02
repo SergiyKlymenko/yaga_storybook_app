@@ -161,7 +161,7 @@ class _BookPageScreenState extends State<BookPageScreen> {
                             borderRadius: BorderRadius.circular(12),
                             border: Border.all(color: Colors.white, width: 2),
                           ),
-                          child: Text(
+                          /*  child: Text(
                             loc.continueOnNextPage,
                             style: TextStyle(
                               fontSize: width * 0.04,
@@ -175,7 +175,7 @@ class _BookPageScreenState extends State<BookPageScreen> {
                                 ),
                               ],
                             ),
-                          ),
+                          ), */
                         )
                       ],
                     ),
