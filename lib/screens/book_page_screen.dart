@@ -153,7 +153,7 @@ class _BookPageScreenState extends State<BookPageScreen> {
                           ),
                         ),
                         const SizedBox(width: 12),
-                        Container(
+                        /* Container(
                           padding:
                               EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                           decoration: BoxDecoration(
@@ -176,7 +176,7 @@ class _BookPageScreenState extends State<BookPageScreen> {
                               ],
                             ),
                           ), */
-                        )
+                        ) */
                       ],
                     ),
                   ),
