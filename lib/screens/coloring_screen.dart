@@ -6,7 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/widgets.dart' as pw;
-import 'package:share_plus/share_plus.dart';
+import 'package:share/share.dart'; // Додаємо пакет для спільного доступу
 
 class ColoringScreen extends StatelessWidget {
   final List<String> coloringImages = [
@@ -27,7 +27,8 @@ class ColoringScreen extends StatelessWidget {
     final file = File('${outputDir.path}/coloring.pdf');
     await file.writeAsBytes(pdfData);
 
-    await Share.shareXFiles([XFile(file.path)], text: 'Розмальовка для друку!');
+    // Використовуємо пакет share для спільного доступу до файлу
+    Share.shareFiles([file.path], text: 'Розмальовка для друку!');
   }
 
   Future<Uint8List> _wrapImageAsPdf(Uint8List imageData) async {

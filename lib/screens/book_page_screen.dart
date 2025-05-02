@@ -305,7 +305,7 @@ class _BookPageScreenState extends State<BookPageScreen> {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: 20),
                   ],
                 ),
               ],
