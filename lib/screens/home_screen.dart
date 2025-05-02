@@ -116,14 +116,14 @@ class _HomeScreenState extends State<HomeScreen>
                     ),
                   ),
                 ),
-                SizedBox(height: height * 0.03),
+                SizedBox(height: height * 0.001),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: width * 0.05),
                   child: Text(
                     loc.appTitle,
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      fontSize: width * 0.13,
+                      fontSize: width * 0.10,
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
                       fontFamily: 'FairyFont1',
@@ -137,7 +137,7 @@ class _HomeScreenState extends State<HomeScreen>
                     ),
                   ),
                 ),
-                Spacer(flex: 6),
+                Spacer(flex: 3),
                 MagicReadButton(
                   onPressed: () {
                     Navigator.push(
@@ -264,7 +264,7 @@ class _MagicReadButtonState extends State<MagicReadButton>
           onTap: widget.onPressed,
           child: Container(
             padding: EdgeInsets.symmetric(
-              vertical: width * 0.03,
+              vertical: width * 0.01,
               horizontal: width * 0.08,
             ),
             decoration: BoxDecoration(

@@ -152,6 +152,31 @@ class _BookPageScreenState extends State<BookPageScreen> {
                             },
                           ),
                         ),
+                        const SizedBox(width: 12),
+                        Container(
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                          decoration: BoxDecoration(
+                            color: const Color.fromARGB(255, 87, 71, 41),
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(color: Colors.white, width: 2),
+                          ),
+                          child: Text(
+                            loc.continueOnNextPage,
+                            style: TextStyle(
+                              fontSize: width * 0.04,
+                              color: Colors.white,
+                              fontFamily: 'FairyFont',
+                              shadows: const [
+                                Shadow(
+                                  blurRadius: 4,
+                                  color: Color.fromARGB(133, 0, 0, 0),
+                                  offset: Offset(2, 2),
+                                ),
+                              ],
+                            ),
+                          ),
+                        )
                       ],
                     ),
                   ),
@@ -240,7 +265,7 @@ class _BookPageScreenState extends State<BookPageScreen> {
                       ),
                     ),
                   ),
-                const SizedBox(height: 16),
+                SizedBox(height: height * 0.01),
                 Column(
                   children: [
                     Row(
@@ -251,12 +276,12 @@ class _BookPageScreenState extends State<BookPageScreen> {
                         if (widget.pageNumber > 1)
                           Expanded(
                             child: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 16),
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: width * 0.15),
                               child: ElevatedButton(
                                 style: _navButtonStyle(width).copyWith(
                                   backgroundColor: MaterialStateProperty.all(
-                                      Color.fromARGB(255, 87, 71, 41)),
+                                      Color.fromARGB(255, 77, 59, 20)),
                                   elevation: MaterialStateProperty.all(6),
                                   side: MaterialStateProperty.all(BorderSide(
                                     color: const Color.fromARGB(
@@ -270,7 +295,7 @@ class _BookPageScreenState extends State<BookPageScreen> {
                                 onPressed: () =>
                                     _navigateToPage(widget.pageNumber - 1),
                                 child: Icon(
-                                  Icons.arrow_back,
+                                  Icons.arrow_back_ios_new,
                                   size: 30,
                                 ),
                               ),
@@ -280,11 +305,12 @@ class _BookPageScreenState extends State<BookPageScreen> {
                           child: Padding(
                             padding: widget.pageNumber == 1
                                 ? EdgeInsets.symmetric(horizontal: width * 0.25)
-                                : EdgeInsets.symmetric(horizontal: 16),
+                                : EdgeInsets.symmetric(
+                                    horizontal: width * 0.15),
                             child: ElevatedButton(
                               style: _navButtonStyle(width).copyWith(
                                 backgroundColor: MaterialStateProperty.all(
-                                    Color.fromARGB(255, 87, 71, 41)),
+                                    Color.fromARGB(255, 77, 59, 20)),
                                 elevation: MaterialStateProperty.all(6),
                                 side: MaterialStateProperty.all(BorderSide(
                                   color:
@@ -297,7 +323,7 @@ class _BookPageScreenState extends State<BookPageScreen> {
                               onPressed: () =>
                                   _navigateToPage(widget.pageNumber + 1),
                               child: Icon(
-                                Icons.arrow_forward,
+                                Icons.arrow_forward_ios,
                                 size: 30,
                               ),
                             ),
