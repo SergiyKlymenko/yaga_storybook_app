@@ -1,14 +1,14 @@
 import 'dart:io';
 import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/widgets.dart' as pw;
-import 'package:share_plus/share_plus.dart';
 
 class ColoringScreen extends StatelessWidget {
+  final platform = const MethodChannel('app.channel.share');
+
   final List<String> coloringImages = [
     'assets/coloring/coloring1.png',
     'assets/coloring/coloring2.png',
@@ -28,12 +28,11 @@ class ColoringScreen extends StatelessWidget {
       final file = File('${outputDir.path}/coloring.pdf');
       await file.writeAsBytes(pdfData);
 
-      // Використовуємо XFile і shareXFiles
-      final xFile = XFile(file.path);
-      await Share.shareXFiles(
-        [xFile],
-        text: 'Розмальовка для друку!',
-      );
+      await platform.invokeMethod('shareFile', {
+        'path': file.path,
+        'mime': 'application/pdf',
+        'title': 'Coloring Page',
+      });
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Помилка при створенні PDF: $e')),

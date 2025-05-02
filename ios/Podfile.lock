@@ -6,11 +6,11 @@ PODS:
   - Flutter (1.0.0)
   - just_audio (0.0.1):
     - Flutter
+  - open_file_ios (0.0.1):
+    - Flutter
   - path_provider_foundation (0.0.1):
     - Flutter
     - FlutterMacOS
-  - share_plus (0.0.1):
-    - Flutter
   - url_launcher_ios (0.0.1):
     - Flutter
 
@@ -19,8 +19,8 @@ DEPENDENCIES:
   - audioplayers_darwin (from `.symlinks/plugins/audioplayers_darwin/ios`)
   - Flutter (from `Flutter`)
   - just_audio (from `.symlinks/plugins/just_audio/ios`)
+  - open_file_ios (from `.symlinks/plugins/open_file_ios/ios`)
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
-  - share_plus (from `.symlinks/plugins/share_plus/ios`)
   - url_launcher_ios (from `.symlinks/plugins/url_launcher_ios/ios`)
 
 EXTERNAL SOURCES:
@@ -32,10 +32,10 @@ EXTERNAL SOURCES:
     :path: Flutter
   just_audio:
     :path: ".symlinks/plugins/just_audio/ios"
+  open_file_ios:
+    :path: ".symlinks/plugins/open_file_ios/ios"
   path_provider_foundation:
     :path: ".symlinks/plugins/path_provider_foundation/darwin"
-  share_plus:
-    :path: ".symlinks/plugins/share_plus/ios"
   url_launcher_ios:
     :path: ".symlinks/plugins/url_launcher_ios/ios"
 
@@ -44,8 +44,8 @@ SPEC CHECKSUMS:
   audioplayers_darwin: ccf9c770ee768abb07e26d90af093f7bab1c12ab
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
   just_audio: 6c031bb61297cf218b4462be616638e81c058e97
+  open_file_ios: 5ff7526df64e4394b4fe207636b67a95e83078bb
   path_provider_foundation: 080d55be775b7414fd5a5ef3ac137b97b097e564
-  share_plus: de6030e33b4e106470e09322d87cf2a4258d2d1d
   url_launcher_ios: 694010445543906933d732453a59da0a173ae33d
 
 PODFILE CHECKSUM: 4305caec6b40dde0ae97be1573c53de1882a07e5
