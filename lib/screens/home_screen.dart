@@ -269,7 +269,10 @@ class _MagicReadButtonState extends State<MagicReadButton>
             ),
             decoration: BoxDecoration(
               gradient: const LinearGradient(
-                colors: [Color(0xFFFFD700), Color(0xFFFFA500)],
+                colors: [
+                  Color(0xFFFFA500),
+                  Color(0xFFFFD700),
+                ],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
               ),
@@ -288,7 +291,7 @@ class _MagicReadButtonState extends State<MagicReadButton>
                 Icon(
                   LucideIcons.wand,
                   size: width * 0.09,
-                  color: Colors.white,
+                  color: Color.fromARGB(255, 255, 248, 149),
                   shadows: const [
                     Shadow(
                       blurRadius: 8,
