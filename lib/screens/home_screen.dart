@@ -137,7 +137,7 @@ class _HomeScreenState extends State<HomeScreen>
                     ),
                   ),
                 ),
-                Spacer(flex: 2),
+                Spacer(flex: 3),
                 MagicReadButton(
                   onPressed: () {
                     Navigator.push(
@@ -264,7 +264,7 @@ class _MagicReadButtonState extends State<MagicReadButton>
           onTap: widget.onPressed,
           child: Container(
             padding: EdgeInsets.symmetric(
-              vertical: width * 0.03,
+              vertical: width * 0.01,
               horizontal: width * 0.08,
             ),
             decoration: BoxDecoration(
