@@ -231,7 +231,7 @@ class _BookPageScreenState extends State<BookPageScreen> {
                     ),
                   ),
                 ] else ...[
-                  SizedBox(height: height * 0.71),
+                  SizedBox(height: height * 0.76),
                 ],
                 if (!isIllustrationPage)
                   Padding(
