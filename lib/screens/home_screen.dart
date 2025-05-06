@@ -19,7 +19,14 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen>
     with SingleTickerProviderStateMixin {
   double _iconScale = 1.0;
-  final youtube_link = dotenv.env['YOUTUBE_LINK'];
+  final youtube_link_in = dotenv.env['YOUTUBE_LINK_IN'];
+  final youtube_link_out = dotenv.env['YOUTUBE_LINK_OUT'];
+
+  final insta_link_in = dotenv.env['INSTA_LINK_IN'];
+  final insta_link_out = dotenv.env['INSTA_LINK_OUT'];
+
+  final fb_link_in = dotenv.env['FB_LINK_IN'];
+  final fb_link_out = dotenv.env['FB_LINK_OUT'];
 
   @override
   void initState() {
@@ -159,24 +166,24 @@ class _HomeScreenState extends State<HomeScreen>
                       _socialIcon(
                         'assets/icons/youtube.png',
                         () => _launchSocialUrl(
-                          'youtube://' + youtube_link!,
-                          'https://' + youtube_link!,
+                          youtube_link_in!,
+                          youtube_link_out!,
                         ),
                         width,
                       ),
                       _socialIcon(
                         'assets/icons/instagram.png',
                         () => _launchSocialUrl(
-                          'instagram://user?username=veseloped.ua',
-                          'https://www.instagram.com/veseloped.ua/',
+                          insta_link_in!,
+                          insta_link_out!,
                         ),
                         width,
                       ),
                       _socialIcon(
                         'assets/icons/facebook.png',
                         () => _launchSocialUrl(
-                          'fb://profile/100076567779795',
-                          'https://www.facebook.com/profile.php?id=100076567779795',
+                          fb_link_in!,
+                          fb_link_out!,
                         ),
                         width,
                       ),
