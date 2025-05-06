@@ -1,20 +1,28 @@
 import 'dart:ffi';
 
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:provider/provider.dart';
+import 'package:turn_page_transition/turn_page_transition.dart';
 
 import '../data/page_texts.dart';
 import '../providers/locale_provider.dart';
 import '../widgets/audio_cntrols.dart';
+import '../widgets/page_flip_wrapper.dart';
 import '../widgets/storybook_drawer.dart';
 
 class BookPageScreen extends StatefulWidget {
   final int pageNumber;
+  final bool isEmbedded;
 
-  const BookPageScreen({super.key, required this.pageNumber});
+  const BookPageScreen({
+    Key? key,
+    required this.pageNumber,
+    this.isEmbedded = false,
+  }) : super(key: key);
 
   @override
   State<BookPageScreen> createState() => _BookPageScreenState();
@@ -384,12 +392,39 @@ class _BookPageScreenState extends State<BookPageScreen> {
     await _pageFlipPlayer.seek(Duration.zero); // почати спочатку
     await _pageFlipPlayer.play(); // відтворити звук
 
-    Navigator.pushReplacement(
+    bool isBack = page < widget.pageNumber;
+
+    Navigator.push(
+      context,
+      TurnPageRoute(
+        builder: (_) => BookPageScreen(pageNumber: page),
+        transitionDuration: const Duration(milliseconds: 700),
+        overleafColor: Colors.brown.shade100,
+        direction:
+            isBack ? TurnDirection.leftToRight : TurnDirection.rightToLeft,
+      ),
+    );
+
+    /* Navigator.pushReplacement(
       context,
       MaterialPageRoute(
         builder: (_) => BookPageScreen(pageNumber: page),
       ),
-    );
+    ); */
+
+    //final totalPages = int.tryParse(dotenv.env['TOTAL_PAGES'] ?? '') ?? 0;
+
+    //if (widget.isEmbedded) return;
+
+    /* Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (_) => PageFlipScreen(
+          initialPage: page,
+          totalPages: totalPages,
+        ),
+      ),
+    ); */
 
     // трохи зачекати, щоб звук встиг програтись
     await Future.delayed(Duration(milliseconds: 150));
