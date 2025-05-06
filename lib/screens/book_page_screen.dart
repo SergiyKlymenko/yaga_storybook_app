@@ -71,10 +71,10 @@ class _BookPageScreenState extends State<BookPageScreen> {
                         Builder(
                           builder: (context) => Container(
                             child: IconButton(
-                              icon: const Icon(
+                              icon: Icon(
                                 Icons.menu,
                                 color: Color.fromARGB(255, 77, 59, 20),
-                                size: 32,
+                                size: width * 0.06,
                               ),
                               onPressed: () =>
                                   Scaffold.of(context).openDrawer(),
@@ -141,10 +141,10 @@ class _BookPageScreenState extends State<BookPageScreen> {
                           child: Builder(
                             builder: (BuildContext context) {
                               return IconButton(
-                                icon: const Icon(
+                                icon: Icon(
                                   Icons.menu, // заміни на іконку трьох рисочок
                                   color: Colors.white,
-                                  size: 32,
+                                  size: width * 0.06,
                                 ),
                                 onPressed: () =>
                                     Scaffold.of(context).openDrawer(),
@@ -183,50 +183,56 @@ class _BookPageScreenState extends State<BookPageScreen> {
                 ],
                 if (!isIllustrationPage) ...[
                   Expanded(
-                    child: SingleChildScrollView(
-                      padding: EdgeInsets.only(
-                          left: width * 0.05, right: width * 0.05),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          ...paragraphs.map((p) {
-                            if (p.trim().isEmpty) return SizedBox.shrink();
-                            final firstLetter = p.trim().substring(0, 1);
-                            final restText = p.trim().substring(1);
+                    child: Scrollbar(
+                      thumbVisibility: true,
+                      thickness: 8,
+                      radius: Radius.circular(12),
+                      child: SingleChildScrollView(
+                        padding: EdgeInsets.only(
+                            left: width * 0.05, right: width * 0.05),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            ...paragraphs.map((p) {
+                              if (p.trim().isEmpty) return SizedBox.shrink();
+                              final firstLetter = p.trim().substring(0, 1);
+                              final restText = p.trim().substring(1);
 
-                            return Padding(
-                              padding: const EdgeInsets.only(bottom: 16),
-                              child: Text.rich(
-                                TextSpan(
-                                  children: [
-                                    WidgetSpan(
-                                      child: SizedBox(width: width * 0.05),
-                                    ),
-                                    TextSpan(
-                                      text: firstLetter,
-                                      style: TextStyle(
-                                        fontSize: width * 0.1,
-                                        fontFamily: 'FairyFont1',
-                                        color: Color.fromARGB(255, 104, 73, 61),
-                                        height: 1.5,
+                              return Padding(
+                                padding: const EdgeInsets.only(bottom: 16),
+                                child: Text.rich(
+                                  TextSpan(
+                                    children: [
+                                      WidgetSpan(
+                                        child: SizedBox(width: width * 0.05),
                                       ),
-                                    ),
-                                    TextSpan(
-                                      text: restText,
-                                      style: TextStyle(
-                                        fontSize: width * 0.055,
-                                        fontFamily: 'FairyFont',
-                                        color: Colors.black,
-                                        height: 1.5,
+                                      TextSpan(
+                                        text: firstLetter,
+                                        style: TextStyle(
+                                          fontSize: width * 0.1,
+                                          fontFamily: 'FairyFont1',
+                                          color:
+                                              Color.fromARGB(255, 104, 73, 61),
+                                          height: 1.5,
+                                        ),
                                       ),
-                                    ),
-                                  ],
+                                      TextSpan(
+                                        text: restText,
+                                        style: TextStyle(
+                                          fontSize: width * 0.055,
+                                          fontFamily: 'FairyFont',
+                                          color: Colors.black,
+                                          height: 1.5,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  textAlign: TextAlign.justify,
                                 ),
-                                textAlign: TextAlign.justify,
-                              ),
-                            );
-                          }),
-                        ],
+                              );
+                            }),
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -237,6 +243,7 @@ class _BookPageScreenState extends State<BookPageScreen> {
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 8),
                     child: Container(
+                      height: height * 0.05,
                       decoration: BoxDecoration(
                         color: const Color.fromARGB(255, 255, 247, 224),
                         borderRadius: BorderRadius.circular(16),
@@ -248,19 +255,30 @@ class _BookPageScreenState extends State<BookPageScreen> {
                           )
                         ],
                       ),
-                      padding: const EdgeInsets.symmetric(horizontal: 8),
-                      child: Row(
+                      //padding: const EdgeInsets.symmetric(horizontal: 8),
+                      child: Stack(
                         children: [
-                          Icon(
-                            Icons.volume_up,
-                            size: 36,
-                            color: Color.fromARGB(
-                                128, 77, 47, 20), // Напівпрозорий
+                          // Центрований аудіоконтрол
+                          Align(
+                            alignment: Alignment.center,
+                            child: Padding(
+                              padding: EdgeInsets.all(height * 0.01),
+                              child: AudioControls(audioAssetPath: audioPath),
+                            ),
                           ),
-                          SizedBox(
-                              width: width *
-                                  0.20), // Проміжок між іконкою та контролем
-                          AudioControls(audioAssetPath: audioPath),
+
+                          // Іконка зліва
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Padding(
+                              padding: EdgeInsets.all(height * 0.01), // Відступ
+                              child: Icon(
+                                Icons.volume_up,
+                                size: 30,
+                                color: Color.fromARGB(128, 77, 47, 20),
+                              ),
+                            ),
+                          ),
                         ],
                       ),
                     ),
@@ -297,6 +315,7 @@ class _BookPageScreenState extends State<BookPageScreen> {
                                 child: Icon(
                                   Icons.arrow_back_ios_new,
                                   size: 30,
+                                  color: Colors.white,
                                 ),
                               ),
                             ),
@@ -304,7 +323,7 @@ class _BookPageScreenState extends State<BookPageScreen> {
                         Expanded(
                           child: Padding(
                             padding: widget.pageNumber == 1
-                                ? EdgeInsets.symmetric(horizontal: width * 0.25)
+                                ? EdgeInsets.symmetric(horizontal: width * 0.30)
                                 : EdgeInsets.symmetric(
                                     horizontal: width * 0.15),
                             child: ElevatedButton(
@@ -324,6 +343,7 @@ class _BookPageScreenState extends State<BookPageScreen> {
                                   _navigateToPage(widget.pageNumber + 1),
                               child: Icon(
                                 Icons.arrow_forward_ios,
+                                color: Colors.white,
                                 size: 30,
                               ),
                             ),
