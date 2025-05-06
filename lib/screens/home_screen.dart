@@ -138,9 +138,9 @@ class _HomeScreenState extends State<HomeScreen>
                       fontFamily: 'FairyFont1',
                       shadows: const [
                         Shadow(
-                          blurRadius: 8,
+                          blurRadius: 6,
                           color: Color.fromARGB(221, 102, 42, 27),
-                          offset: Offset(3, 3),
+                          offset: Offset(6, 5),
                         )
                       ],
                     ),
