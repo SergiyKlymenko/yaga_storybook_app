@@ -262,7 +262,7 @@ class _BookPageScreenState extends State<BookPageScreen> {
                           Align(
                             alignment: Alignment.center,
                             child: Padding(
-                              padding: EdgeInsets.all(height * 0.01),
+                              padding: EdgeInsets.all(0),
                               child: AudioControls(audioAssetPath: audioPath),
                             ),
                           ),
