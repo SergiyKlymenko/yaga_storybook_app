@@ -391,6 +391,11 @@ class _BookPageScreenState extends State<BookPageScreen> {
   void _navigateToPage(int page) async {
     bool isBack = page < widget.pageNumber;
 
+    Future.delayed(const Duration(milliseconds: 100), () async {
+      await _pageFlipPlayer.seek(Duration.zero);
+      await _pageFlipPlayer.play();
+    });
+
     Navigator.push(
       context,
       TurnPageRoute(
@@ -401,9 +406,6 @@ class _BookPageScreenState extends State<BookPageScreen> {
             isBack ? TurnDirection.leftToRight : TurnDirection.rightToLeft,
       ),
     );
-
-    await _pageFlipPlayer.seek(Duration.zero); // почати спочатку
-    await _pageFlipPlayer.play(); // відтворити звук
 
     /* Navigator.pushReplacement(
       context,
