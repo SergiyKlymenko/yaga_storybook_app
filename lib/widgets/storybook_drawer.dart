@@ -127,7 +127,7 @@ class StorybookDrawer extends StatelessWidget {
         title,
         style: TextStyle(
           fontSize: fontSize,
-          fontFamily: 'FairyFont2',
+          fontFamily: 'FairyFont',
           color: Colors.brown[800],
         ),
       ),
