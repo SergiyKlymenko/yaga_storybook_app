@@ -40,6 +40,7 @@ flutter:
   assets:
     - assets/images/
     - assets/audio/
+    - assets/sounds/
     - assets/icons/flags/
     - assets/icons/youtube.png
     - assets/icons/instagram.png

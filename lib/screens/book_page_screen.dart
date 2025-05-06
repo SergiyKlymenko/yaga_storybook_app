@@ -3,6 +3,7 @@ import 'dart:ffi';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:provider/provider.dart';
 
 import '../data/page_texts.dart';
@@ -20,6 +21,21 @@ class BookPageScreen extends StatefulWidget {
 }
 
 class _BookPageScreenState extends State<BookPageScreen> {
+  late AudioPlayer _pageFlipPlayer;
+
+  @override
+  void initState() {
+    super.initState();
+    _pageFlipPlayer = AudioPlayer();
+    _pageFlipPlayer.setAsset('assets/sounds/page_flip.mp3');
+  }
+
+  @override
+  void dispose() {
+    _pageFlipPlayer.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final loc = AppLocalizations.of(context)!;
@@ -364,7 +380,13 @@ class _BookPageScreenState extends State<BookPageScreen> {
     );
   }
 
-  void _navigateToPage(int page) {
+  void _navigateToPage(int page) async {
+    await _pageFlipPlayer.seek(Duration.zero); // почати спочатку
+    await _pageFlipPlayer.play(); // відтворити звук
+
+    // трохи зачекати, щоб звук встиг програтись
+    await Future.delayed(Duration(milliseconds: 150));
+
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
