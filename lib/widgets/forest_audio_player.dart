@@ -25,7 +25,7 @@ class ForestAudioPlayer {
   }
 
   void unmute() {
-    _player.setVolume(1.0);
+    _player.setVolume(0.2);
   }
 
   Future<void> dispose() async {

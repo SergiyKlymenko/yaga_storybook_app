@@ -33,18 +33,21 @@ class BookPageScreen extends StatefulWidget {
 class _BookPageScreenState extends State<BookPageScreen> {
   late AudioPlayer _pageFlipPlayer;
 
+  final ForestAudioPlayer _forestAudioPlayer = ForestAudioPlayer();
+
   @override
   void initState() {
     super.initState();
     _pageFlipPlayer = AudioPlayer();
     _pageFlipPlayer.setAsset('assets/sounds/page_flip1.mp3');
 
-    ForestAudioPlayer().initialize();
+    _forestAudioPlayer.initialize();
   }
 
   @override
   void dispose() {
     _pageFlipPlayer.dispose();
+    _forestAudioPlayer.mute();
     super.dispose();
   }
 

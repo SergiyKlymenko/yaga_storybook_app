@@ -93,11 +93,15 @@ class StorybookDrawer extends StatelessWidget {
                   ),
                 ),
                 onTap: () {
-                  Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(builder: (_) => const HomeScreen()),
-                    (route) => false,
-                  );
+                  Navigator.of(context).pop(); // Закриваємо Drawer
+
+                  Future.delayed(const Duration(milliseconds: 300), () {
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(builder: (_) => const HomeScreen()),
+                      (route) => false,
+                    );
+                  });
                 },
               ),
           ],
