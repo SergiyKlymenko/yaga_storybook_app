@@ -35,7 +35,7 @@ class _BookPageScreenState extends State<BookPageScreen> {
   void initState() {
     super.initState();
     _pageFlipPlayer = AudioPlayer();
-    _pageFlipPlayer.setAsset('assets/sounds/page_flip.mp3');
+    _pageFlipPlayer.setAsset('assets/sounds/page_flip1.mp3');
   }
 
   @override
