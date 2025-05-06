@@ -43,22 +43,24 @@ class StorybookDrawer extends StatelessWidget {
           padding: EdgeInsets.zero,
           children: [
             SizedBox(height: screenHeight * 0.08),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
-              child: Text(
-                loc.language,
-                style: TextStyle(
-                  fontSize: fontSize * 1.1,
-                  fontWeight: FontWeight.bold,
-                  color: const Color(0xFF6D3900),
-                  fontFamily: 'FairyFont',
-                  shadows: const [
-                    Shadow(
-                      blurRadius: 4,
-                      color: Colors.black26,
-                      offset: Offset(2, 2),
-                    ),
-                  ],
+            Center(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+                child: Text(
+                  loc.language,
+                  style: TextStyle(
+                    fontSize: fontSize * 1.1,
+                    fontWeight: FontWeight.bold,
+                    color: const Color(0xFF6D3900),
+                    fontFamily: 'FairyFont',
+                    shadows: const [
+                      Shadow(
+                        blurRadius: 4,
+                        color: Colors.black26,
+                        offset: Offset(2, 2),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -113,7 +115,7 @@ class StorybookDrawer extends StatelessWidget {
     double horizontalPadding,
   ) {
     return ListTile(
-      contentPadding: EdgeInsets.only(left: horizontalPadding * 1.5, right: 0),
+      contentPadding: EdgeInsets.only(left: horizontalPadding, right: 0),
       leading: ClipOval(
         child: SvgPicture.asset(
           flagAsset,
