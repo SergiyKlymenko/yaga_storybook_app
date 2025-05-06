@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 
+import 'forest_audio_player.dart';
+
 class AudioControls extends StatefulWidget {
   final String audioAssetPath;
 
@@ -17,7 +19,18 @@ class _AudioControlsState extends State<AudioControls> {
   void initState() {
     super.initState();
     _player = AudioPlayer();
+
+    // Завантаження аудіо
     _loadAudio();
+
+    // Відстеження стану програвання
+    _player.playingStream.listen((isPlaying) {
+      if (isPlaying) {
+        ForestAudioPlayer().mute();
+      } else {
+        ForestAudioPlayer().unmute();
+      }
+    });
   }
 
   Future<void> _loadAudio() async {
