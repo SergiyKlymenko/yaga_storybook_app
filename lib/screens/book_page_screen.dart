@@ -34,8 +34,8 @@ class _BookPageScreenState extends State<BookPageScreen> {
         text.split('\n\n').map((p) => '    ${p.trim()}').toList();
 
     final size = MediaQuery.of(context).size;
-    final width = size.width;
-    final height = size.height;
+    final scrwidth = size.width;
+    final scrheight = size.height;
 
     final isIllustrationPage =
         _getIllustrationPages().contains(widget.pageNumber);
@@ -74,7 +74,7 @@ class _BookPageScreenState extends State<BookPageScreen> {
                               icon: Icon(
                                 Icons.menu,
                                 color: Color.fromARGB(255, 77, 59, 20),
-                                size: height * 0.05,
+                                size: scrheight * 0.05,
                               ),
                               onPressed: () =>
                                   Scaffold.of(context).openDrawer(),
@@ -85,7 +85,7 @@ class _BookPageScreenState extends State<BookPageScreen> {
                         Text(
                           loc.appTitle,
                           style: TextStyle(
-                            fontSize: width * 0.06,
+                            fontSize: scrwidth * 0.06,
                             color: Color.fromARGB(255, 77, 47, 20),
                             fontFamily: 'FairyFont1',
                             shadows: [
@@ -101,8 +101,8 @@ class _BookPageScreenState extends State<BookPageScreen> {
                     ),
                   ),
                   Container(
-                    width: width * 0.08,
-                    height: width * 0.08,
+                    width: scrwidth * 0.08,
+                    height: scrwidth * 0.08,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       border: Border.all(
@@ -112,7 +112,7 @@ class _BookPageScreenState extends State<BookPageScreen> {
                     child: Text(
                       '${widget.pageNumber}',
                       style: TextStyle(
-                        fontSize: width * 0.045,
+                        fontSize: scrwidth * 0.045,
                         fontFamily: 'FairyFont1',
                         color: Color.fromARGB(255, 77, 47, 20),
                         fontWeight: FontWeight.bold,
@@ -144,7 +144,7 @@ class _BookPageScreenState extends State<BookPageScreen> {
                                 icon: Icon(
                                   Icons.menu, // заміни на іконку трьох рисочок
                                   color: Colors.white,
-                                  size: width * 0.06,
+                                  size: scrwidth * 0.06,
                                 ),
                                 onPressed: () =>
                                     Scaffold.of(context).openDrawer(),
@@ -189,7 +189,7 @@ class _BookPageScreenState extends State<BookPageScreen> {
                       radius: Radius.circular(12),
                       child: SingleChildScrollView(
                         padding: EdgeInsets.only(
-                            left: width * 0.05, right: width * 0.05),
+                            left: scrwidth * 0.05, right: scrwidth * 0.05),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
@@ -204,12 +204,12 @@ class _BookPageScreenState extends State<BookPageScreen> {
                                   TextSpan(
                                     children: [
                                       WidgetSpan(
-                                        child: SizedBox(width: width * 0.05),
+                                        child: SizedBox(width: scrwidth * 0.05),
                                       ),
                                       TextSpan(
                                         text: firstLetter,
                                         style: TextStyle(
-                                          fontSize: width * 0.1,
+                                          fontSize: scrwidth * 0.1,
                                           fontFamily: 'FairyFont1',
                                           color:
                                               Color.fromARGB(255, 104, 73, 61),
@@ -219,7 +219,7 @@ class _BookPageScreenState extends State<BookPageScreen> {
                                       TextSpan(
                                         text: restText,
                                         style: TextStyle(
-                                          fontSize: width * 0.055,
+                                          fontSize: scrwidth * 0.055,
                                           fontFamily: 'FairyFont',
                                           color: Colors.black,
                                           height: 1.5,
@@ -237,13 +237,13 @@ class _BookPageScreenState extends State<BookPageScreen> {
                     ),
                   ),
                 ] else ...[
-                  SizedBox(height: height * 0.76),
+                  SizedBox(height: scrheight * 0.76),
                 ],
                 if (!isIllustrationPage)
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 8),
                     child: Container(
-                      height: height * 0.05,
+                      height: scrheight * 0.05,
                       decoration: BoxDecoration(
                         color: const Color.fromARGB(255, 255, 247, 224),
                         borderRadius: BorderRadius.circular(16),
@@ -283,7 +283,7 @@ class _BookPageScreenState extends State<BookPageScreen> {
                       ),
                     ),
                   ),
-                SizedBox(height: height * 0.01),
+                SizedBox(height: scrheight * 0.01),
                 Column(
                   children: [
                     Row(
@@ -295,9 +295,9 @@ class _BookPageScreenState extends State<BookPageScreen> {
                           Expanded(
                             child: Padding(
                               padding: EdgeInsets.symmetric(
-                                  horizontal: width * 0.15),
+                                  horizontal: scrwidth * 0.15),
                               child: ElevatedButton(
-                                style: _navButtonStyle(width).copyWith(
+                                style: _navButtonStyle(scrwidth).copyWith(
                                   backgroundColor: MaterialStateProperty.all(
                                       Color.fromARGB(255, 77, 59, 20)),
                                   elevation: MaterialStateProperty.all(6),
@@ -323,11 +323,12 @@ class _BookPageScreenState extends State<BookPageScreen> {
                         Expanded(
                           child: Padding(
                             padding: widget.pageNumber == 1
-                                ? EdgeInsets.symmetric(horizontal: width * 0.30)
+                                ? EdgeInsets.symmetric(
+                                    horizontal: scrwidth * 0.30)
                                 : EdgeInsets.symmetric(
-                                    horizontal: width * 0.15),
+                                    horizontal: scrwidth * 0.15),
                             child: ElevatedButton(
-                              style: _navButtonStyle(width).copyWith(
+                              style: _navButtonStyle(scrwidth).copyWith(
                                 backgroundColor: MaterialStateProperty.all(
                                     Color.fromARGB(255, 77, 59, 20)),
                                 elevation: MaterialStateProperty.all(6),

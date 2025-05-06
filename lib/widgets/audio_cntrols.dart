@@ -46,11 +46,15 @@ class _AudioControlsState extends State<AudioControls> {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    final scrwidth = size.width;
+    final scrheight = size.height;
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         IconButton(
-          icon: const Icon(Icons.replay_5),
+          icon: Icon(Icons.replay_5, size: scrheight * 0.03),
           onPressed: _rewind,
         ),
         StreamBuilder<PlayerState>(
@@ -66,13 +70,14 @@ class _AudioControlsState extends State<AudioControls> {
             }
 
             return IconButton(
-              icon: Icon(playing ? Icons.pause : Icons.play_arrow),
+              icon: Icon(playing ? Icons.pause : Icons.play_arrow,
+                  size: scrheight * 0.03),
               onPressed: playing ? _player.pause : _player.play,
             );
           },
         ),
         IconButton(
-          icon: const Icon(Icons.forward_5),
+          icon: Icon(Icons.forward_5, size: scrheight * 0.03),
           onPressed: _forward,
         ),
       ],
