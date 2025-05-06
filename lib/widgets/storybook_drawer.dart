@@ -67,12 +67,12 @@ class StorybookDrawer extends StatelessWidget {
             SizedBox(height: verticalPadding / 2),
             _languageTile(context, 'Українська', 'assets/icons/flags/ua.svg',
                 const Locale('uk'), fontSize, horizontalPadding),
-            _languageTile(context, 'Polski', 'assets/icons/flags/pl.svg',
+            /*  _languageTile(context, 'Polski', 'assets/icons/flags/pl.svg',
                 const Locale('pl'), fontSize, horizontalPadding),
             _languageTile(context, 'Azərbaycan', 'assets/icons/flags/az.svg',
                 const Locale('az'), fontSize, horizontalPadding),
             _languageTile(context, 'English', 'assets/icons/flags/gb.svg',
-                const Locale('en'), fontSize, horizontalPadding),
+                const Locale('en'), fontSize, horizontalPadding), */
             Divider(height: screenHeight * 0.04, color: Colors.brown.shade200),
             _iconTile(
                 context, Icons.brush, loc.coloring, '/coloring', fontSize),
