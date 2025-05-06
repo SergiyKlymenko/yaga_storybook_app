@@ -271,7 +271,7 @@ class _BookPageScreenState extends State<BookPageScreen> {
                           Align(
                             alignment: Alignment.centerLeft,
                             child: Padding(
-                              padding: EdgeInsets.all(height * 0.01), // Відступ
+                              padding: EdgeInsets.all(6), // Відступ
                               child: Icon(
                                 Icons.volume_up,
                                 size: 30,
