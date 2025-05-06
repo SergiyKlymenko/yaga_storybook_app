@@ -65,7 +65,7 @@ class _BookPageScreenState extends State<BookPageScreen> {
                 if (!isIllustrationPage) ...[
                   Padding(
                     padding:
-                        const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                        const EdgeInsets.symmetric(horizontal: 5, vertical: 8),
                     child: Row(
                       children: [
                         Builder(
@@ -74,7 +74,7 @@ class _BookPageScreenState extends State<BookPageScreen> {
                               icon: Icon(
                                 Icons.menu,
                                 color: Color.fromARGB(255, 77, 59, 20),
-                                size: width * 0.06,
+                                size: height * 0.05,
                               ),
                               onPressed: () =>
                                   Scaffold.of(context).openDrawer(),
