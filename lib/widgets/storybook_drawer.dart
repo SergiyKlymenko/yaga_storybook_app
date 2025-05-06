@@ -113,8 +113,7 @@ class StorybookDrawer extends StatelessWidget {
     double horizontalPadding,
   ) {
     return ListTile(
-      contentPadding: EdgeInsets.only(
-          left: horizontalPadding * 2, right: horizontalPadding),
+      contentPadding: EdgeInsets.only(left: horizontalPadding * 1.5, right: 0),
       leading: ClipOval(
         child: SvgPicture.asset(
           flagAsset,
