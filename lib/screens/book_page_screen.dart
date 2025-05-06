@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:ffi';
 
 import 'package:flutter/gestures.dart';
@@ -391,22 +392,21 @@ class _BookPageScreenState extends State<BookPageScreen> {
   void _navigateToPage(int page) async {
     bool isBack = page < widget.pageNumber;
 
-    Future.delayed(const Duration(milliseconds: 100), () async {
-      await _pageFlipPlayer.seek(Duration.zero);
-      await _pageFlipPlayer.play();
+    _pageFlipPlayer.seek(Duration.zero);
+    _pageFlipPlayer.play();
+
+    Future.delayed(const Duration(milliseconds: 400), () {
+      Navigator.push(
+        context,
+        TurnPageRoute(
+          builder: (_) => BookPageScreen(pageNumber: page),
+          transitionDuration: const Duration(milliseconds: 600),
+          overleafColor: Colors.brown.shade100,
+          direction:
+              isBack ? TurnDirection.leftToRight : TurnDirection.rightToLeft,
+        ),
+      );
     });
-
-    Navigator.push(
-      context,
-      TurnPageRoute(
-        builder: (_) => BookPageScreen(pageNumber: page),
-        transitionDuration: const Duration(milliseconds: 1000),
-        overleafColor: Colors.brown.shade100,
-        direction:
-            isBack ? TurnDirection.leftToRight : TurnDirection.rightToLeft,
-      ),
-    );
-
     /* Navigator.pushReplacement(
       context,
       MaterialPageRoute(
