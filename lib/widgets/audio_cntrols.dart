@@ -54,9 +54,10 @@ class _AudioControlsState extends State<AudioControls> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         IconButton(
-          icon: Icon(Icons.replay_5, size: scrheight * 0.03),
+          icon: Icon(Icons.replay_5, size: scrwidth * 0.08),
           onPressed: _rewind,
         ),
+        SizedBox(width: scrwidth * 0.05),
         StreamBuilder<PlayerState>(
           stream: _player.playerStateStream,
           builder: (context, snapshot) {
@@ -71,13 +72,14 @@ class _AudioControlsState extends State<AudioControls> {
 
             return IconButton(
               icon: Icon(playing ? Icons.pause : Icons.play_arrow,
-                  size: scrheight * 0.03),
+                  size: scrwidth * 0.08),
               onPressed: playing ? _player.pause : _player.play,
             );
           },
         ),
+        SizedBox(width: scrwidth * 0.05),
         IconButton(
-          icon: Icon(Icons.forward_5, size: scrheight * 0.03),
+          icon: Icon(Icons.forward_5, size: scrwidth * 0.08),
           onPressed: _forward,
         ),
       ],
