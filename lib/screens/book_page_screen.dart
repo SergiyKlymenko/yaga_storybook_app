@@ -144,7 +144,7 @@ class _BookPageScreenState extends State<BookPageScreen> {
                                 icon: Icon(
                                   Icons.menu, // заміни на іконку трьох рисочок
                                   color: Colors.white,
-                                  size: scrwidth * 0.06,
+                                  size: scrheight * 0.04,
                                 ),
                                 onPressed: () =>
                                     Scaffold.of(context).openDrawer(),
