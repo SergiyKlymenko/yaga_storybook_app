@@ -40,6 +40,7 @@ class StorybookDrawer extends StatelessWidget {
           ),
         ),
         child: ListView(
+          primary: false,
           padding: EdgeInsets.zero,
           children: [
             SizedBox(height: screenHeight * 0.08),
