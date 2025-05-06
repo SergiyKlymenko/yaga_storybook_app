@@ -384,15 +384,15 @@ class _BookPageScreenState extends State<BookPageScreen> {
     await _pageFlipPlayer.seek(Duration.zero); // почати спочатку
     await _pageFlipPlayer.play(); // відтворити звук
 
-    // трохи зачекати, щоб звук встиг програтись
-    await Future.delayed(Duration(milliseconds: 150));
-
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
         builder: (_) => BookPageScreen(pageNumber: page),
       ),
     );
+
+    // трохи зачекати, щоб звук встиг програтись
+    await Future.delayed(Duration(milliseconds: 150));
   }
 
   ButtonStyle _navButtonStyle(double width) {
