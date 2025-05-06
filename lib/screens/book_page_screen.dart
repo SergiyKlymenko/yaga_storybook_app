@@ -395,7 +395,7 @@ class _BookPageScreenState extends State<BookPageScreen> {
       context,
       TurnPageRoute(
         builder: (_) => BookPageScreen(pageNumber: page),
-        transitionDuration: const Duration(milliseconds: 700),
+        transitionDuration: const Duration(milliseconds: 1000),
         overleafColor: Colors.brown.shade100,
         direction:
             isBack ? TurnDirection.leftToRight : TurnDirection.rightToLeft,
