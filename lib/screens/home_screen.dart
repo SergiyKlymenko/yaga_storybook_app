@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -18,6 +19,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen>
     with SingleTickerProviderStateMixin {
   double _iconScale = 1.0;
+  final youtube_link = dotenv.env['YOUTUBE_LINK'];
 
   @override
   void initState() {
@@ -157,8 +159,8 @@ class _HomeScreenState extends State<HomeScreen>
                       _socialIcon(
                         'assets/icons/youtube.png',
                         () => _launchSocialUrl(
-                          'youtube://www.youtube.com/@Veseloped_ua',
-                          'https://www.youtube.com/@Veseloped_ua',
+                          'youtube://' + youtube_link!,
+                          'https://' + youtube_link!,
                         ),
                         width,
                       ),
