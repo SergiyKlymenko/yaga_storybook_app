@@ -6,9 +6,9 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'screens/about_author_screen.dart';
 import 'screens/coloring_screen.dart';
 import 'screens/faq_screen.dart';
+import 'screens/game_screen.dart';
 import 'screens/home_screen.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 Future<void> main() async {
@@ -63,6 +63,7 @@ class YagaStorybookApp extends StatelessWidget {
         '/about': (context) => const AboutAuthorScreen(),
         '/faq': (context) => const FaqScreen(),
         '/coloring': (context) => ColoringScreen(),
+        '/game': (context) => YagaGameScreen(),
       },
     );
   }

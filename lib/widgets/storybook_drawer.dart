@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
-
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../providers/locale_provider.dart';
 import '../screens/coloring_screen.dart';
 import '../screens/home_screen.dart';
@@ -74,6 +74,9 @@ class StorybookDrawer extends StatelessWidget {
                 const Locale('az'), fontSize, horizontalPadding),
             _languageTile(context, 'English', 'assets/icons/flags/gb.svg',
                 const Locale('en'), fontSize, horizontalPadding), */
+            Divider(height: screenHeight * 0.04, color: Colors.brown.shade200),
+            _iconTile(context, FontAwesomeIcons.gamepad, loc.playGame, '/game',
+                fontSize),
             Divider(height: screenHeight * 0.04, color: Colors.brown.shade200),
             _iconTile(
                 context, Icons.brush, loc.coloring, '/coloring', fontSize),
