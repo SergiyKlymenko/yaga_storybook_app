@@ -16,7 +16,7 @@ class YagaGame extends FlameGame with TapDetector, HasCollisionDetection {
   late Timer treeSpawnTimer;
   late Timer gTreeSpawnTimer;
 
-  final double jumpForce = -300; // Збільшили силу стрибка
+  final double jumpForce = -400; // Збільшили силу стрибка
 
   final List<SunnyBunny> bunnies = [];
   final List<Tree> trees = [];
@@ -32,7 +32,7 @@ class YagaGame extends FlameGame with TapDetector, HasCollisionDetection {
 
   @override
   Future<void> onLoad() async {
-    gravity = 600;
+    gravity = 870;
     velocity = 0;
 
     bunnySpawnTimer = Timer(
@@ -42,14 +42,14 @@ class YagaGame extends FlameGame with TapDetector, HasCollisionDetection {
     );
 
     treeSpawnTimer = Timer(
-      10 + random.nextDouble() * 2,
+      5 + random.nextDouble() * 2,
       onTick: spawnTrees,
       repeat: true,
     );
     treeSpawnTimer.start();
 
     gTreeSpawnTimer = Timer(
-      50 + random.nextDouble() * 2,
+      5 + random.nextDouble() * 3 + 5,
       onTick: spawnGTrees,
       repeat: true,
     );
@@ -59,8 +59,8 @@ class YagaGame extends FlameGame with TapDetector, HasCollisionDetection {
 
     yaga = SpriteComponent()
       ..sprite = await Sprite.load('yaga.png') // Завантажуємо спрайт
-      ..size = Vector2(100, 70)
-      ..position = Vector2(200, size.y / 5);
+      ..size = Vector2(140, 110)
+      ..position = Vector2(80, size.y / 5);
 
     yaga.add(RectangleHitbox());
 
@@ -80,7 +80,7 @@ class YagaGame extends FlameGame with TapDetector, HasCollisionDetection {
   }
 
   void spawnBunnies() {
-    final bunnySize = 30.0 + random.nextDouble() * 30;
+    final bunnySize = 35.0 + random.nextDouble() * 50;
     final maxY = size.y - bunnySize;
     final double minY = 0;
     final bunnyY = random.nextDouble() * (maxY - minY) + minY;
@@ -99,7 +99,7 @@ class YagaGame extends FlameGame with TapDetector, HasCollisionDetection {
   }
 
   void spawnTrees() {
-    final treeSize = 30.0 + random.nextDouble() * 30;
+    final treeSize = 35.0 + random.nextDouble() * 50;
     final maxY = size.y - treeSize;
     final treeY = random.nextDouble() * maxY;
 
@@ -119,14 +119,9 @@ class YagaGame extends FlameGame with TapDetector, HasCollisionDetection {
   void spawnGTrees() {
     final gTreeSize = 200.0;
 
-    // Чим більший розмір – тим більше очок (1 до 5)
-    final int points = ((gTreeSize - 30) / 6).ceil().clamp(1, 5);
-
     final gTree = GTree(
-      position: Vector2(size.x, size.y - 100),
-      size: Vector2(gTreeSize, gTreeSize),
-      points: points,
-    );
+        position: Vector2(size.x, size.y - 220),
+        size: Vector2(gTreeSize, gTreeSize));
 
     gTrees.add(gTree);
     add(gTree);
@@ -148,17 +143,17 @@ class YagaGame extends FlameGame with TapDetector, HasCollisionDetection {
 
     // Рух зайчиків вліво
     for (final bunny in bunnies) {
-      bunny.x -= 150 * dt; // Швидкість руху зайчиків
+      bunny.x -= 200 * dt; // Швидкість руху зайчиків
     }
 
     // Рух tree вліво
     for (final tree in trees) {
-      tree.x -= 50 * dt;
+      tree.x -= 150 * dt;
     }
 
     // Рух g tree вліво
     for (final gTree in gTrees) {
-      gTree.x -= 50 * dt;
+      gTree.x -= 100 * dt;
     }
 
     // Видалення зайчиків за межами екрану + нові зайчики
@@ -215,7 +210,7 @@ class YagaGame extends FlameGame with TapDetector, HasCollisionDetection {
 
   void resetGame() {
     isGameOver = false;
-    yaga.position = Vector2(200, size.y / 5);
+    yaga.position = Vector2(120, size.y / 5);
     velocity = 0;
     score = 0;
     scoreText.text = 'Очки: 0';
@@ -329,19 +324,17 @@ class Tree extends PositionComponent with CollisionCallbacks {
 }
 
 class GTree extends PositionComponent with CollisionCallbacks {
-  final int points;
   late SpriteComponent sprite;
 
   GTree({
     required Vector2 position,
     required Vector2 size,
-    required this.points,
   }) : super(position: position, size: size);
 
   @override
   Future<void> onLoad() async {
     sprite = SpriteComponent()
-      ..sprite = await Sprite.load('tree3.png')
+      ..sprite = await Sprite.load('tree2.png')
       ..size = size;
     add(sprite);
     add(RectangleHitbox());
