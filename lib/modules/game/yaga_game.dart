@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:flame/camera.dart';
 import 'package:flame/components.dart';
 import 'package:flame/effects.dart';
+import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 import 'package:flame/input.dart';
 import 'package:flame/collisions.dart';
@@ -15,13 +16,17 @@ class YagaGame extends FlameGame with TapDetector, HasCollisionDetection {
   late Timer bunnySpawnTimer;
   late Timer treeSpawnTimer;
   late Timer gTreeSpawnTimer;
+  late SpriteComponent background1;
+  late SpriteComponent background2;
 
-  final double jumpForce = -400; // Збільшили силу стрибка
+  final double jumpForce = -450;
 
   final List<SunnyBunny> bunnies = [];
   final List<Tree> trees = [];
   final List<GTree> gTrees = [];
   final Random random = Random();
+
+  final backgroundWidth = 1400.0;
 
   late TextComponent scoreText;
   int score = 0;
@@ -32,11 +37,33 @@ class YagaGame extends FlameGame with TapDetector, HasCollisionDetection {
 
   @override
   Future<void> onLoad() async {
-    gravity = 870;
+    gravity = 700;
     velocity = 0;
 
+    camera.viewport = FixedResolutionViewport(resolution: Vector2(800, 480));
+
+    final backgroundSprite = await Sprite.load('game_back.png');
+
+    final backgroundHeight = backgroundWidth *
+        (backgroundSprite.srcSize.y / backgroundSprite.srcSize.x);
+
+    background1 = SpriteComponent()
+      ..sprite = backgroundSprite
+      ..size = Vector2(backgroundWidth, backgroundHeight)
+      ..position = Vector2(0, 0)
+      ..priority = -10;
+
+    background2 = SpriteComponent()
+      ..sprite = backgroundSprite
+      ..size = Vector2(backgroundWidth, backgroundHeight)
+      ..position = Vector2(backgroundWidth, 0)
+      ..priority = -10;
+
+    add(background1);
+    add(background2);
+
     bunnySpawnTimer = Timer(
-      1 + random.nextDouble() * 2, // Випадковий інтервал 1–3 сек
+      1 + random.nextDouble() * 2,
       onTick: spawnBunnies,
       repeat: true,
     );
@@ -45,25 +72,19 @@ class YagaGame extends FlameGame with TapDetector, HasCollisionDetection {
       5 + random.nextDouble() * 2,
       onTick: spawnTrees,
       repeat: true,
-    );
-    treeSpawnTimer.start();
+    )..start();
 
     gTreeSpawnTimer = Timer(
-      5 + random.nextDouble() * 3 + 5,
+      5 + random.nextDouble() * 3 + 50,
       onTick: spawnGTrees,
       repeat: true,
-    );
-    gTreeSpawnTimer.start();
-
-    camera.viewport = FixedResolutionViewport(resolution: Vector2(800, 480));
+    )..start();
 
     yaga = SpriteComponent()
-      ..sprite = await Sprite.load('yaga.png') // Завантажуємо спрайт
-      ..size = Vector2(140, 110)
+      ..sprite = await Sprite.load('yaga.png')
+      ..size = Vector2(160, 130)
       ..position = Vector2(80, size.y / 5);
-
     yaga.add(RectangleHitbox());
-
     add(yaga);
 
     scoreText = TextComponent(
@@ -82,10 +103,8 @@ class YagaGame extends FlameGame with TapDetector, HasCollisionDetection {
   void spawnBunnies() {
     final bunnySize = 35.0 + random.nextDouble() * 50;
     final maxY = size.y - bunnySize;
-    final double minY = 0;
-    final bunnyY = random.nextDouble() * (maxY - minY) + minY;
+    final bunnyY = random.nextDouble() * maxY;
 
-    // Чим більший розмір – тим більше очок (1 до 5)
     final int points = ((bunnySize - 30) / 6).ceil().clamp(1, 5);
 
     final sunnyBunny = SunnyBunny(
@@ -100,10 +119,8 @@ class YagaGame extends FlameGame with TapDetector, HasCollisionDetection {
 
   void spawnTrees() {
     final treeSize = 35.0 + random.nextDouble() * 50;
-    final maxY = size.y - treeSize;
-    final treeY = random.nextDouble() * maxY;
+    final treeY = random.nextDouble() * (size.y - treeSize);
 
-    // Чим більший розмір – тим більше очок (1 до 5)
     final int points = ((treeSize - 30) / 6).ceil().clamp(1, 5);
 
     final tree = Tree(
@@ -117,11 +134,12 @@ class YagaGame extends FlameGame with TapDetector, HasCollisionDetection {
   }
 
   void spawnGTrees() {
-    final gTreeSize = 200.0;
+    final gTreeSize = 250.0;
 
     final gTree = GTree(
-        position: Vector2(size.x, size.y - 220),
-        size: Vector2(gTreeSize, gTreeSize));
+      position: Vector2(size.x, size.y - 265),
+      size: Vector2(gTreeSize - 50, gTreeSize),
+    );
 
     gTrees.add(gTree);
     add(gTree);
@@ -141,27 +159,33 @@ class YagaGame extends FlameGame with TapDetector, HasCollisionDetection {
       gameOver();
     }
 
-    // Рух зайчиків вліво
-    for (final bunny in bunnies) {
-      bunny.x -= 200 * dt; // Швидкість руху зайчиків
+    // Циклічний фон
+    const scrollSpeed = 20.0;
+    background1.x -= scrollSpeed * dt;
+    background2.x -= scrollSpeed * dt;
+
+    if (background1.x <= -backgroundWidth) {
+      background1.x = background2.x + backgroundWidth;
+    }
+    if (background2.x <= -backgroundWidth) {
+      background2.x = background1.x + backgroundWidth;
     }
 
-    // Рух tree вліво
+    for (final bunny in bunnies) {
+      bunny.x -= 200 * dt;
+    }
+
     for (final tree in trees) {
       tree.x -= 150 * dt;
     }
 
-    // Рух g tree вліво
     for (final gTree in gTrees) {
       gTree.x -= 100 * dt;
     }
 
-    // Видалення зайчиків за межами екрану + нові зайчики
     bunnies.removeWhere((bunny) {
       if (bunny.x + bunny.width < 0) {
-        if (bunny.parent != null) {
-          remove(bunny);
-        }
+        bunny.removeFromParent();
         return true;
       }
       return false;
@@ -169,9 +193,7 @@ class YagaGame extends FlameGame with TapDetector, HasCollisionDetection {
 
     trees.removeWhere((tree) {
       if (tree.x + tree.width < 0) {
-        if (tree.parent != null) {
-          remove(tree);
-        }
+        tree.removeFromParent();
         return true;
       }
       return false;
@@ -179,23 +201,19 @@ class YagaGame extends FlameGame with TapDetector, HasCollisionDetection {
 
     gTrees.removeWhere((gTree) {
       if (gTree.x + gTree.width < 0) {
-        if (gTree.parent != null) {
-          remove(gTree);
-        }
+        gTree.removeFromParent();
         return true;
       }
       return false;
     });
 
     bunnySpawnTimer.update(dt);
-
     treeSpawnTimer.update(dt);
-
     gTreeSpawnTimer.update(dt);
   }
 
   @override
-  void onTap() {
+  void onTapDown(TapDownInfo info) {
     if (isGameOver) {
       resetGame();
     } else {
@@ -216,23 +234,17 @@ class YagaGame extends FlameGame with TapDetector, HasCollisionDetection {
     scoreText.text = 'Очки: 0';
 
     for (final bunny in bunnies) {
-      if (bunny.parent != null) {
-        remove(bunny);
-      }
+      bunny.removeFromParent();
     }
     bunnies.clear();
 
     for (final tree in trees) {
-      if (tree.parent != null) {
-        remove(tree);
-      }
+      tree.removeFromParent();
     }
     trees.clear();
 
     for (final gTree in gTrees) {
-      if (gTree.parent != null) {
-        remove(gTree);
-      }
+      gTree.removeFromParent();
     }
     gTrees.clear();
 
@@ -268,11 +280,10 @@ class SunnyBunny extends PositionComponent with CollisionCallbacks {
       game.score += this.points;
       game.scoreText.text = 'Очки: ${game.score}';
 
-      // Додаємо ефект очок над зайчиком
       final scoreDisplay = ScoreTextEffectComponent(
         text: '+${this.points}',
         position: this.position - Vector2(0, size.y / 2),
-        color: const Color(0xFF00FF00), // зелений
+        color: const Color(0xFF00FF00),
       );
       game.add(scoreDisplay);
 
@@ -305,16 +316,13 @@ class Tree extends PositionComponent with CollisionCallbacks {
     if (other is SpriteComponent) {
       final game = findGame() as YagaGame;
       game.score -= this.points;
-      if (game.score < 0) {
-        game.score = 0;
-      }
+      if (game.score < 0) game.score = 0;
       game.scoreText.text = 'Очки: ${game.score}';
 
-      // Додаємо ефект очок над деревом
       final scoreDisplay = ScoreTextEffectComponent(
         text: '-${this.points}',
         position: this.position - Vector2(0, size.y / 2),
-        color: const Color(0xFFFF0000), // червоний
+        color: const Color(0xFFFF0000),
       );
       game.add(scoreDisplay);
 
@@ -344,7 +352,7 @@ class GTree extends PositionComponent with CollisionCallbacks {
   void onCollision(Set<Vector2> points, PositionComponent other) {
     if (other is SpriteComponent) {
       final game = findGame() as YagaGame;
-      game.gameOver(); // Викликаємо метод gameOver через гру
+      game.gameOver();
     }
   }
 }
@@ -353,7 +361,7 @@ class ScoreTextEffectComponent extends TextComponent with HasPaint {
   ScoreTextEffectComponent({
     required String text,
     required Vector2 position,
-    required Color color, // новий параметр
+    required Color color,
   }) : super(
           text: text,
           position: position,
@@ -370,13 +378,7 @@ class ScoreTextEffectComponent extends TextComponent with HasPaint {
 
   @override
   Future<void> onLoad() async {
-    add(
-      MoveByEffect(
-        Vector2(0, -30),
-        EffectController(duration: 0.5),
-      ),
-    );
-
+    add(MoveByEffect(Vector2(0, -30), EffectController(duration: 0.5)));
     add(
       OpacityEffect.to(
         0.0,

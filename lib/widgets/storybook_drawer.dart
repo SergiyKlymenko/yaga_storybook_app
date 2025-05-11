@@ -3,7 +3,10 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../providers/locale_provider.dart';
+import '../screens/about_author_screen.dart';
 import '../screens/coloring_screen.dart';
+import '../screens/faq_screen.dart';
+import '../screens/game_screen.dart';
 import '../screens/home_screen.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -99,10 +102,9 @@ class StorybookDrawer extends StatelessWidget {
                 onTap: () {
                   Navigator.of(context).pop(); // Закриваємо Drawer
 
-                  Future.delayed(const Duration(milliseconds: 300), () {
-                    Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(builder: (_) => const HomeScreen()),
+                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                    Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(builder: (_) => HomeScreen()),
                       (route) => false,
                     );
                   });
@@ -165,8 +167,30 @@ class StorybookDrawer extends StatelessWidget {
         ),
       ),
       onTap: () {
-        Navigator.pushNamed(context, route);
+        Navigator.of(context).pop(); // Закриваємо Drawer
+
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (_) => _getScreenFromRoute(route)),
+            (route) => false,
+          );
+        });
       },
     );
+  }
+}
+
+Widget _getScreenFromRoute(String route) {
+  switch (route) {
+    case '/coloring':
+      return ColoringScreen();
+    case '/about':
+      return AboutAuthorScreen(); // якщо є
+    case '/faq':
+      return FaqScreen(); // якщо є
+    case '/game':
+      return YagaGameScreen(); // якщо є
+    default:
+      return HomeScreen();
   }
 }
