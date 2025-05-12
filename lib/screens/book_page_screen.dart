@@ -58,7 +58,7 @@ class _BookPageScreenState extends State<BookPageScreen> {
     final currentLang =
         Provider.of<LocaleProvider>(context).locale.languageCode;
     final audioPath =
-        'assets/audio/$currentLang/audio_page${widget.pageNumber}.mp3';
+        'assets/audio/$currentLang/audio_page${widget.pageNumber}.wav';
     final currentLocale = Localizations.localeOf(context).languageCode;
     final text = _getPageText(widget.pageNumber, currentLocale);
     final paragraphs =
