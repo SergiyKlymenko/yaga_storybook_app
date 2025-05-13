@@ -17,5 +17,10 @@
   "faqText": "Aby rozpocząć czytanie, naciśnij 'Rozpocznij czytanie'. Aby zmienić język, użyj menu. Aby odsłuchać stronę, naciśnij ikonę głośnika.",
   "home": "Strona główna",
   "continueOnNextPage": "Ciąg dalszy na następnej stronie...",
-  "playGame": "Zagraj w grę"
+  "playGame": "Zagraj w grę",
+  "startGame": "Rozpocznij grę",
+  "gameTitle": "Magiczna Droga Baby Jagi",
+  "endGame": "Zakończ grę",
+  "points": "Zaklęcie",
+  "gameOver": "Koniec gry!"
 }
