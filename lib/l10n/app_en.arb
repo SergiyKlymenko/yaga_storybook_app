@@ -22,5 +22,6 @@
   "gameTitle": "Yaga’s Magic Path",
   "endGame": "Finish the game",
   "points": "Spell",
-  "gameOver": "Game over!"
+  "gameOver": "Game over!",
+  "tryAgain": "Try again"
 }

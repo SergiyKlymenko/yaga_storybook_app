@@ -22,5 +22,6 @@
   "gameTitle": "Baba Yaganın Sehrli Yolu",
   "endGame": "Oyunu bitirin",
   "points": "Hərf",
-  "gameOver": "Oyun bitdi!"
+  "gameOver": "Oyun bitdi!",
+  "tryAgain": "Bir daha cəhd et"
 }

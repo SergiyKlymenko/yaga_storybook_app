@@ -56,8 +56,6 @@ class _YagaGameScreenState extends State<YagaGameScreen> {
   }
 
   void _gameOver() {
-    if (_isGameOver) return; // Не виконуй, якщо гра вже завершен
-
     setState(() {
       _isGameOver = true;
       _showRestartButton = true;
@@ -94,6 +92,7 @@ class _YagaGameScreenState extends State<YagaGameScreen> {
                       onExit: _exitToMenu,
                       showRestartButton: _showButton,
                       onGameOver: _gameOver,
+                      isGameOver: _isGameOver,
                       context: context),
                 ),
                 Positioned(
@@ -150,7 +149,7 @@ class _YagaGameScreenState extends State<YagaGameScreen> {
                             horizontal: 24, vertical: 12),
                       ),
                       child: Text(
-                        AppLocalizations.of(context)!.home,
+                        AppLocalizations.of(context)!.tryAgain,
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
@@ -212,7 +211,10 @@ class _YagaGameScreenState extends State<YagaGameScreen> {
           ),
           SizedBox(height: screenWidth * 0.04),
           MagicButton(
-            onPressed: () => setState(() => _isGameStarted = true),
+            onPressed: () => setState(() {
+              _isGameStarted = true;
+              _isGameOver = false;
+            }),
             label: AppLocalizations.of(context)!.startGame,
             textStyle: TextStyle(
               fontSize: screenWidth * 0.03,

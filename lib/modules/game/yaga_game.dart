@@ -43,6 +43,7 @@ class YagaGame extends FlameGame with TapDetector, HasCollisionDetection {
       {required this.onExit,
       required this.onGameOver,
       required this.showRestartButton,
+      required this.isGameOver,
       required this.context});
 
   @override
@@ -71,6 +72,8 @@ class YagaGame extends FlameGame with TapDetector, HasCollisionDetection {
 
     add(background1);
     add(background2);
+
+    if (isGameOver) return;
 
     bunnySpawnTimer = Timer(
       1 + random.nextDouble() * 2,
@@ -167,59 +170,59 @@ class YagaGame extends FlameGame with TapDetector, HasCollisionDetection {
     if (yaga.y > size.y - yaga.height) {
       yaga.y = size.y - yaga.height;
       gameOver();
-    }
+    } else {
+      // Циклічний фон
+      const scrollSpeed = 20.0;
+      background1.x -= scrollSpeed * dt;
+      background2.x -= scrollSpeed * dt;
 
-    // Циклічний фон
-    const scrollSpeed = 20.0;
-    background1.x -= scrollSpeed * dt;
-    background2.x -= scrollSpeed * dt;
-
-    if (background1.x <= -backgroundWidth) {
-      background1.x = background2.x + backgroundWidth;
-    }
-    if (background2.x <= -backgroundWidth) {
-      background2.x = background1.x + backgroundWidth;
-    }
-
-    for (final bunny in bunnies) {
-      bunny.x -= 200 * dt;
-    }
-
-    for (final tree in trees) {
-      tree.x -= 150 * dt;
-    }
-
-    for (final gTree in gTrees) {
-      gTree.x -= 100 * dt;
-    }
-
-    bunnies.removeWhere((bunny) {
-      if (bunny.x + bunny.width < 0) {
-        bunny.removeFromParent();
-        return true;
+      if (background1.x <= -backgroundWidth) {
+        background1.x = background2.x + backgroundWidth;
       }
-      return false;
-    });
-
-    trees.removeWhere((tree) {
-      if (tree.x + tree.width < 0) {
-        tree.removeFromParent();
-        return true;
+      if (background2.x <= -backgroundWidth) {
+        background2.x = background1.x + backgroundWidth;
       }
-      return false;
-    });
 
-    gTrees.removeWhere((gTree) {
-      if (gTree.x + gTree.width < 0) {
-        gTree.removeFromParent();
-        return true;
+      for (final bunny in bunnies) {
+        bunny.x -= 200 * dt;
       }
-      return false;
-    });
 
-    bunnySpawnTimer.update(dt);
-    treeSpawnTimer.update(dt);
-    gTreeSpawnTimer.update(dt);
+      for (final tree in trees) {
+        tree.x -= 150 * dt;
+      }
+
+      for (final gTree in gTrees) {
+        gTree.x -= 100 * dt;
+      }
+
+      bunnies.removeWhere((bunny) {
+        if (bunny.x + bunny.width < 0) {
+          bunny.removeFromParent();
+          return true;
+        }
+        return false;
+      });
+
+      trees.removeWhere((tree) {
+        if (tree.x + tree.width < 0) {
+          tree.removeFromParent();
+          return true;
+        }
+        return false;
+      });
+
+      gTrees.removeWhere((gTree) {
+        if (gTree.x + gTree.width < 0) {
+          gTree.removeFromParent();
+          return true;
+        }
+        return false;
+      });
+
+      bunnySpawnTimer.update(dt);
+      treeSpawnTimer.update(dt);
+      gTreeSpawnTimer.update(dt);
+    }
   }
 
   @override

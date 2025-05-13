@@ -22,5 +22,6 @@
   "gameTitle": "Magiczna Droga Baby Jagi",
   "endGame": "Zakończ grę",
   "points": "Zaklęcie",
-  "gameOver": "Koniec gry!"
+  "gameOver": "Koniec gry!",
+  "tryAgain": "Spróbuj ponownie"
 }
