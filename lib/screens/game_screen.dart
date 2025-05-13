@@ -64,46 +64,60 @@ class _YagaGameScreenState extends State<YagaGameScreen> {
   }
 
   Widget _buildMenu() {
+    final size = MediaQuery.of(context).size;
+    final scrwidth = size.width;
+    final scrheight = size.height;
     return Container(
-      color: Colors.green[300],
-      child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+      decoration: const BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage('assets/images/game_menu.png'),
+          fit: BoxFit.cover,
+        ),
+      ),
+      child: Column(
+        children: [
+          SizedBox(height: scrheight * 0.1), // Заголовок вище
+          const Text(
+            'Збери сонячних зайчиків',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 36,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
+          ),
+          //const Spacer(), // Піднімає блок з кнопками трохи вгору
+          SizedBox(height: scrheight * 0.25),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Image.asset(
-                  'assets/images/yaga.png', // Ваше зображення
-                  width: 100, // Можна налаштувати розмір
-                  height: 100, // Можна налаштувати розмір
+                ElevatedButton(
+                  onPressed: () => setState(() => _isGameStarted = true),
+                  style: ElevatedButton.styleFrom(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: scrheight * 0.2, vertical: 16),
+                  ),
+                  child:
+                      const Text('Почати гру', style: TextStyle(fontSize: 20)),
                 ),
-                const SizedBox(width: 10),
-                const Text(
-                  'Збери сонячних зайчиків',
-                  style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold),
+                ElevatedButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  style: ElevatedButton.styleFrom(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: scrheight * 0.2, vertical: 16),
+                    backgroundColor: Colors.white,
+                    foregroundColor: Colors.black,
+                  ),
+                  child: const Text('На головний екран',
+                      style: TextStyle(fontSize: 20)),
                 ),
               ],
             ),
-            const SizedBox(height: 30),
-            ElevatedButton(
-              onPressed: () => setState(() => _isGameStarted = true),
-              style: ElevatedButton.styleFrom(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 32, vertical: 16)),
-              child: const Text('Почати гру', style: TextStyle(fontSize: 20)),
-            ),
-            const SizedBox(height: 20),
-            OutlinedButton(
-              onPressed: () => Navigator.of(context).pop(),
-              style: OutlinedButton.styleFrom(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 32, vertical: 16)),
-              child: const Text('На головний екран',
-                  style: TextStyle(fontSize: 20)),
-            ),
-          ],
-        ),
+          ),
+          const SizedBox(height: 60),
+        ],
       ),
     );
   }
