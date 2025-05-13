@@ -58,7 +58,8 @@ class _BookPageScreenState extends State<BookPageScreen> {
     final currentLang =
         Provider.of<LocaleProvider>(context).locale.languageCode;
     final audioPath =
-        'assets/audio/$currentLang/audio_page${widget.pageNumber}.wav';
+        'assets/audio/${currentLang}_audio_page${widget.pageNumber}.mp3';
+
     final currentLocale = Localizations.localeOf(context).languageCode;
     final text = _getPageText(widget.pageNumber, currentLocale);
     final paragraphs =
@@ -396,8 +397,13 @@ class _BookPageScreenState extends State<BookPageScreen> {
   }
 
   void _navigateToPage(int page) async {
-    bool isBack = page < widget.pageNumber;
+    // Отримуємо загальну кількість сторінок з .env або іншого джерела
+    final totalPages = int.tryParse(dotenv.env['TOTAL_PAGES'] ?? '') ?? 0;
 
+    // Якщо запитана сторінка поза діапазоном — просто вийдемо
+    if (page < 1 || page > totalPages) return;
+
+    // Аудіо та анімація
     _pageFlipPlayer.seek(Duration.zero);
     _pageFlipPlayer.play();
 
@@ -408,34 +414,12 @@ class _BookPageScreenState extends State<BookPageScreen> {
           builder: (_) => BookPageScreen(pageNumber: page),
           transitionDuration: const Duration(milliseconds: 600),
           overleafColor: Colors.brown.shade100,
-          direction:
-              isBack ? TurnDirection.leftToRight : TurnDirection.rightToLeft,
+          direction: page < widget.pageNumber
+              ? TurnDirection.leftToRight
+              : TurnDirection.rightToLeft,
         ),
       );
     });
-    /* Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (_) => BookPageScreen(pageNumber: page),
-      ),
-    ); */
-
-    //final totalPages = int.tryParse(dotenv.env['TOTAL_PAGES'] ?? '') ?? 0;
-
-    //if (widget.isEmbedded) return;
-
-    /* Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (_) => PageFlipScreen(
-          initialPage: page,
-          totalPages: totalPages,
-        ),
-      ),
-    ); */
-
-    // трохи зачекати, щоб звук встиг програтись
-    //await Future.delayed(Duration(milliseconds: 150));
   }
 
   ButtonStyle _navButtonStyle(double width) {

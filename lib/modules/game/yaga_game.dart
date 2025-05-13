@@ -7,7 +7,9 @@ import 'package:flame/game.dart';
 import 'package:flame/input.dart';
 import 'package:flame/collisions.dart';
 import 'package:flame/text.dart';
+import 'package:flutter/material.dart';
 import 'dart:math';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class YagaGame extends FlameGame with TapDetector, HasCollisionDetection {
   late SpriteComponent yaga;
@@ -33,7 +35,15 @@ class YagaGame extends FlameGame with TapDetector, HasCollisionDetection {
   bool isGameOver = false;
 
   final VoidCallback onExit;
-  YagaGame({required this.onExit});
+  final VoidCallback onGameOver;
+  final VoidCallback showRestartButton;
+  final BuildContext context; // Додаємо контекст
+
+  YagaGame(
+      {required this.onExit,
+      required this.onGameOver,
+      required this.showRestartButton,
+      required this.context});
 
   @override
   Future<void> onLoad() async {
@@ -88,7 +98,7 @@ class YagaGame extends FlameGame with TapDetector, HasCollisionDetection {
     add(yaga);
 
     scoreText = TextComponent(
-      text: 'Очки: 0',
+      text: AppLocalizations.of(context)!.points + ' 0',
       position: Vector2(10, 10),
       anchor: Anchor.topLeft,
       priority: 10,
@@ -215,7 +225,8 @@ class YagaGame extends FlameGame with TapDetector, HasCollisionDetection {
   @override
   void onTapDown(TapDownInfo info) {
     if (isGameOver) {
-      resetGame();
+      // resetGame();
+      return;
     } else {
       velocity = jumpForce;
     }
@@ -223,7 +234,45 @@ class YagaGame extends FlameGame with TapDetector, HasCollisionDetection {
 
   void gameOver() {
     isGameOver = true;
-    scoreText.text = 'Кінець гри! Очки: $score\nТоркнись, щоб почати знову.';
+
+    // Зупиняємо таймери
+    bunnySpawnTimer.stop();
+    treeSpawnTimer.stop();
+    gTreeSpawnTimer.stop();
+
+    // Центруємо текст кінця гри
+    final gameOverText = TextComponent(
+      text: AppLocalizations.of(context)!.gameOver,
+      position: Vector2(
+          size.x / 2, size.y / 4), // Центруємо по горизонталі та вгорі екрану
+      anchor: Anchor.center,
+      priority: 20,
+      textRenderer: TextPaint(
+        style: TextStyle(
+          fontSize: 40,
+          color: Colors.white,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+    );
+    add(gameOverText);
+
+    // Текст з очками
+    final scoreDisplayText = TextComponent(
+      text: AppLocalizations.of(context)!.points + ': $score',
+      position: Vector2(size.x / 2, size.y / 3),
+      anchor: Anchor.center,
+      priority: 20,
+      textRenderer: TextPaint(
+        style: TextStyle(
+          fontSize: 30,
+          color: Colors.white,
+        ),
+      ),
+    );
+    add(scoreDisplayText);
+
+    onGameOver();
   }
 
   void resetGame() {
@@ -231,7 +280,7 @@ class YagaGame extends FlameGame with TapDetector, HasCollisionDetection {
     yaga.position = Vector2(120, size.y / 5);
     velocity = 0;
     score = 0;
-    scoreText.text = 'Очки: 0';
+    scoreText.text = AppLocalizations.of(context)!.points + ': 0';
 
     for (final bunny in bunnies) {
       bunny.removeFromParent();
@@ -247,6 +296,11 @@ class YagaGame extends FlameGame with TapDetector, HasCollisionDetection {
       gTree.removeFromParent();
     }
     gTrees.clear();
+
+// Перезапуск таймерів
+    bunnySpawnTimer.start();
+    treeSpawnTimer.start();
+    gTreeSpawnTimer.start();
 
     spawnBunnies();
     spawnTrees();
@@ -274,11 +328,13 @@ class SunnyBunny extends PositionComponent with CollisionCallbacks {
   }
 
   @override
+  // ignore: must_call_super
   void onCollision(Set<Vector2> points, PositionComponent other) {
     if (other is SpriteComponent) {
       final game = findGame() as YagaGame;
       game.score += this.points;
-      game.scoreText.text = 'Очки: ${game.score}';
+      game.scoreText.text =
+          AppLocalizations.of(game.context)!.points + ': ${game.score}';
 
       final scoreDisplay = ScoreTextEffectComponent(
         text: '+${this.points}',
@@ -317,7 +373,8 @@ class Tree extends PositionComponent with CollisionCallbacks {
       final game = findGame() as YagaGame;
       game.score -= this.points;
       if (game.score < 0) game.score = 0;
-      game.scoreText.text = 'Очки: ${game.score}';
+      game.scoreText.text =
+          AppLocalizations.of(game.context)!.points + ': ${game.score}';
 
       final scoreDisplay = ScoreTextEffectComponent(
         text: '-${this.points}',

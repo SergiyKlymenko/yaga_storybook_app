@@ -17,5 +17,10 @@
   "faqText": "'Oxumağa başla' düyməsini basın. Dili dəyişmək üçün menyudan istifadə edin. Səhifəni dinləmək üçün səsgücləndirici düyməsinə basın.",
   "home": "Əsas səhifə",
   "continueOnNextPage": "Davamı növbəti səhifədə...",
-  "playGame": "Oyun oyna"
+  "playGame": "Oyun oyna",
+  "startGame": "Oyuna başlayın",
+  "gameTitle": "Baba Yaganın Sehrli Yolu",
+  "endGame": "Oyunu bitirin",
+  "points": "Hərf",
+  "gameOver": "Oyun bitdi!"
 }
