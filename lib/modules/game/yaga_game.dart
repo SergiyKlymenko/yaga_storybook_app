@@ -34,6 +34,9 @@ class YagaGame extends FlameGame with TapDetector, HasCollisionDetection {
   int score = 0;
   bool isGameOver = false;
 
+  late TextComponent gameOverText;
+  late TextComponent scoreDisplayText;
+
   final VoidCallback onExit;
   final VoidCallback onGameOver;
   final VoidCallback showRestartButton;
@@ -102,7 +105,7 @@ class YagaGame extends FlameGame with TapDetector, HasCollisionDetection {
 
     scoreText = TextComponent(
       text: AppLocalizations.of(context)!.points + ' 0',
-      position: Vector2(10, 10),
+      position: Vector2(size.x * 0.05, size.y * 0.035),
       anchor: Anchor.topLeft,
       priority: 10,
     );
@@ -244,10 +247,10 @@ class YagaGame extends FlameGame with TapDetector, HasCollisionDetection {
     gTreeSpawnTimer.stop();
 
     // Центруємо текст кінця гри
-    final gameOverText = TextComponent(
+    gameOverText = TextComponent(
       text: AppLocalizations.of(context)!.gameOver,
-      position: Vector2(
-          size.x / 2, size.y / 4), // Центруємо по горизонталі та вгорі екрану
+      position: Vector2(size.x * 0.5,
+          size.y * 0.25), // Центруємо по горизонталі та вгорі екрану
       anchor: Anchor.center,
       priority: 20,
       textRenderer: TextPaint(
@@ -261,15 +264,15 @@ class YagaGame extends FlameGame with TapDetector, HasCollisionDetection {
     add(gameOverText);
 
     // Текст з очками
-    final scoreDisplayText = TextComponent(
+    scoreDisplayText = TextComponent(
       text: AppLocalizations.of(context)!.points + ': $score',
-      position: Vector2(size.x / 2, size.y / 3),
+      position: Vector2(size.x * 0.5, size.y * 0.35),
       anchor: Anchor.center,
       priority: 20,
       textRenderer: TextPaint(
         style: TextStyle(
           fontSize: 30,
-          color: Colors.white,
+          color: Color(0xFFFFF59D),
         ),
       ),
     );
@@ -300,7 +303,9 @@ class YagaGame extends FlameGame with TapDetector, HasCollisionDetection {
     }
     gTrees.clear();
 
-// Перезапуск таймерів
+    gameOverText.removeFromParent();
+    scoreDisplayText.removeFromParent();
+
     bunnySpawnTimer.start();
     treeSpawnTimer.start();
     gTreeSpawnTimer.start();

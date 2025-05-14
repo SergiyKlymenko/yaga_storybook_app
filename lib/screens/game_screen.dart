@@ -19,6 +19,7 @@ class _YagaGameScreenState extends State<YagaGameScreen> {
   bool _isGameOver = false;
   bool _showRestartButton = false;
   late final AudioPlayer _audioPlayer;
+  late YagaGame yagaGame;
 
   @override
   void initState() {
@@ -35,6 +36,14 @@ class _YagaGameScreenState extends State<YagaGameScreen> {
     }).catchError((e) {
       debugPrint('❌ Failed to load audio asset: $e');
     });
+
+    yagaGame = YagaGame(
+      onExit: _exitToMenu,
+      showRestartButton: _showButton,
+      onGameOver: _gameOver,
+      isGameOver: _isGameOver,
+      context: context,
+    );
   }
 
   @override
@@ -56,9 +65,11 @@ class _YagaGameScreenState extends State<YagaGameScreen> {
   }
 
   void _gameOver() {
-    setState(() {
-      _isGameOver = true;
-      _showRestartButton = true;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      setState(() {
+        _isGameOver = true;
+        _showRestartButton = true;
+      });
     });
   }
 
@@ -76,7 +87,6 @@ class _YagaGameScreenState extends State<YagaGameScreen> {
       _isGameStarted = true; // Починаємо гру знову
       _showRestartButton = false;
     });
-    // Логіка для перезапуску гри
   }
 
   @override
@@ -87,35 +97,29 @@ class _YagaGameScreenState extends State<YagaGameScreen> {
       body: _isGameStarted
           ? Stack(
               children: [
-                GameWidget(
-                  game: YagaGame(
-                      onExit: _exitToMenu,
-                      showRestartButton: _showButton,
-                      onGameOver: _gameOver,
-                      isGameOver: _isGameOver,
-                      context: context),
-                ),
+                GameWidget(game: yagaGame),
                 Positioned(
-                  top: screenHeight * 0.02,
-                  right: screenHeight * 0.08,
+                  top: screenHeight * 0.06,
+                  right: screenHeight * 0.04,
                   child: ElevatedButton(
                     onPressed: _exitToMenu,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.transparent,
                       side: const BorderSide(
                         color: Color(0xFFFFF59D),
-                        width: 2,
+                        width: 1,
                       ),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(40),
                       ),
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 24, vertical: 12),
+                      padding: EdgeInsets.symmetric(
+                          horizontal: screenWidth * 0.015,
+                          vertical: screenHeight * 0.015),
                     ),
                     child: Text(
                       AppLocalizations.of(context)!.endGame,
                       style: TextStyle(
-                        fontSize: 18,
+                        fontSize: screenHeight * 0.04,
                         fontWeight: FontWeight.bold,
                         color: Color(0xFFFFF59D),
                         shadows: const [
@@ -131,40 +135,40 @@ class _YagaGameScreenState extends State<YagaGameScreen> {
                 ),
                 // Кнопка перезапуску, яка з'являється після програшу
                 if (_showRestartButton)
-                  Positioned(
-                    bottom: screenHeight * 0.1,
-                    left: screenWidth * 0.35,
-                    child: ElevatedButton(
-                      onPressed: _restartGame,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.transparent,
-                        side: const BorderSide(
-                          color: Color(0xFFFFF59D),
-                          width: 2,
+                  Column(children: [
+                    Center(
+                      child: Padding(
+                        padding: EdgeInsets.only(
+                            top: screenHeight * 0.6), // трошки нижче центру
+                        child: MagicButton(
+                          onPressed: () {
+                            yagaGame.resetGame();
+                            setState(() {
+                              _isGameOver = false;
+                              _showRestartButton = false;
+                            });
+                          },
+                          label: AppLocalizations.of(context)!.tryAgain,
+                          textStyle: TextStyle(
+                            fontSize: screenWidth * 0.03,
+                            color: const Color.fromARGB(255, 105, 57, 12),
+                            fontFamily: 'FairyFont',
+                            fontWeight: FontWeight.bold,
+                            shadows: const [
+                              Shadow(
+                                blurRadius: 4,
+                                color: Colors.black26,
+                                offset: Offset(2, 2),
+                              ),
+                            ],
+                          ),
+                          width: screenWidth * 0.35,
+                          height: screenWidth * 0.07,
+                          spacing: 0,
                         ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(40),
-                        ),
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 24, vertical: 12),
                       ),
-                      child: Text(
-                        AppLocalizations.of(context)!.tryAgain,
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xFFFFF59D),
-                          shadows: const [
-                            Shadow(
-                              blurRadius: 6,
-                              color: Colors.black26,
-                              offset: Offset(2, 2),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  )
+                    )
+                  ])
                 else
                   SizedBox(),
               ],
