@@ -215,10 +215,17 @@ class _YagaGameScreenState extends State<YagaGameScreen> {
           ),
           SizedBox(height: screenWidth * 0.04),
           MagicButton(
-            onPressed: () => setState(() {
-              _isGameStarted = true;
-              _isGameOver = false;
-            }),
+            onPressed: () {
+              setState(() {
+                _isGameStarted = true;
+
+                if (_isGameOver) {
+                  _isGameOver = false;
+                  _showRestartButton = false;
+                  yagaGame.resetGame();
+                }
+              });
+            },
             label: AppLocalizations.of(context)!.startGame,
             textStyle: TextStyle(
               fontSize: screenWidth * 0.03,
