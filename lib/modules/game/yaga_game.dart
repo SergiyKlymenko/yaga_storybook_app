@@ -167,7 +167,8 @@ class YagaGame extends FlameGame with TapDetector, HasCollisionDetection {
     final treeSize =
         Vector2(sprite.srcSize.x * scale, sprite.srcSize.y * scale);
 
-    final treePosition = Vector2(size.x, size.x * scale);
+    final treeY = size.y - treeSize.y;
+    final treePosition = Vector2(size.x, treeY);
 
     final gTree = GTree(
       position: treePosition,
@@ -268,9 +269,6 @@ class YagaGame extends FlameGame with TapDetector, HasCollisionDetection {
     if (gameOverText == null) {
       gameOverText = TextComponent(
         text: AppLocalizations.of(context)!.gameOver,
-        position: Vector2(size.x * 0.5, size.y * 0.25),
-        anchor: Anchor.center,
-        priority: 20,
         textRenderer: TextPaint(
           style: TextStyle(
             fontSize: 40,
@@ -278,23 +276,28 @@ class YagaGame extends FlameGame with TapDetector, HasCollisionDetection {
             fontWeight: FontWeight.bold,
           ),
         ),
-      );
+        priority: 20,
+      )
+        ..anchor = Anchor.center
+        ..position = Vector2(size.x * 0.5 + 60, size.y * 0.25);
+
       add(gameOverText!);
     }
 
     if (scoreDisplayText == null) {
       scoreDisplayText = TextComponent(
         text: AppLocalizations.of(context)!.points + ': $score',
-        position: Vector2(size.x * 0.5, size.y * 0.35),
-        anchor: Anchor.center,
-        priority: 20,
         textRenderer: TextPaint(
           style: TextStyle(
             fontSize: 30,
             color: Color(0xFFFFF59D),
           ),
         ),
-      );
+        priority: 20,
+      )
+        ..anchor = Anchor.center
+        ..position = Vector2(size.x * 0.5 + 60, size.y * 0.35);
+
       add(scoreDisplayText!);
     }
 
