@@ -72,6 +72,7 @@ class _YagaGameScreenState extends State<YagaGameScreen> {
     setState(() {
       _isGameStarted = false;
       _showRestartButton = false;
+      _startBackgroundMusic();
     });
   }
 
