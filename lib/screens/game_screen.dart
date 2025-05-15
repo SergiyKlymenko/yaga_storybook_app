@@ -32,6 +32,7 @@ class _YagaGameScreenState extends State<YagaGameScreen> {
     _audioPlayer = AudioPlayer();
     _audioPlayer.setAsset('assets/sounds/game_soundtrack.mp3').then((_) {
       _audioPlayer.setLoopMode(LoopMode.one);
+      _audioPlayer.setVolume(0.7);
       _audioPlayer.play();
     }).catchError((e) {
       debugPrint('❌ Failed to load audio asset: $e');
@@ -43,7 +44,17 @@ class _YagaGameScreenState extends State<YagaGameScreen> {
       onGameOver: _gameOver,
       isGameOver: _isGameOver,
       context: context,
+      onStopMusic: _stopBackgroundMusic,
+      onStartMusic: _startBackgroundMusic,
     );
+  }
+
+  void _stopBackgroundMusic() {
+    _audioPlayer.pause();
+  }
+
+  void _startBackgroundMusic() {
+    _audioPlayer.play();
   }
 
   @override
