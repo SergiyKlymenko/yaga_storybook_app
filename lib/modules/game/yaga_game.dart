@@ -153,12 +153,26 @@ class YagaGame extends FlameGame with TapDetector, HasCollisionDetection {
     add(tree);
   }
 
-  void spawnGTrees() {
-    final gTreeSize = 250.0;
+  void spawnGTrees() async {
+    /*  final gTreeSize = 250.0;
 
     final gTree = GTree(
-      position: Vector2(size.x, size.y - 265),
+      position: Vector2(size.x, size.y - gTreeSize),
       size: Vector2(gTreeSize - 50, gTreeSize),
+    ); */
+
+    final sprite = await Sprite.load('tree2.png');
+    final scale = 0.2; // або інше значення
+
+    final treeSize =
+        Vector2(sprite.srcSize.x * scale, sprite.srcSize.y * scale);
+
+    final treePosition = Vector2(size.x, size.x * scale);
+
+    final gTree = GTree(
+      position: treePosition,
+      size: treeSize,
+      sprite: sprite,
     );
 
     gTrees.add(gTree);
@@ -407,19 +421,23 @@ class Tree extends PositionComponent with CollisionCallbacks {
 }
 
 class GTree extends PositionComponent with CollisionCallbacks {
-  late SpriteComponent sprite;
+  late SpriteComponent spriteComponent;
 
   GTree({
     required Vector2 position,
     required Vector2 size,
-  }) : super(position: position, size: size);
+    required Sprite sprite,
+  }) : super(position: position, size: size) {
+    spriteComponent =
+        SpriteComponent(sprite: sprite, size: size, position: Vector2.zero());
+  }
 
   @override
   Future<void> onLoad() async {
-    sprite = SpriteComponent()
+    spriteComponent = SpriteComponent()
       ..sprite = await Sprite.load('tree2.png')
       ..size = size;
-    add(sprite);
+    add(spriteComponent);
     add(RectangleHitbox());
   }
 
