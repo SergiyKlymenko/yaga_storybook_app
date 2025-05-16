@@ -445,7 +445,10 @@ class Tree extends PositionComponent with CollisionCallbacks {
       );
       game.add(scoreDisplay);
 
-      FlameAudio.play('umph.mp3');
+      FlameAudio.play(
+        'umph.mp3',
+        volume: 0.8, // 80% гучності
+      );
 
       game.remove(this);
     }

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -44,11 +46,32 @@ class _HomeScreenState extends State<HomeScreen>
     try {
       await _audioPlayer.setAsset('assets/sounds/book_cover.mp3');
       _audioPlayer.setLoopMode(LoopMode.one);
-      await _audioPlayer.setVolume(0.5);
+      await _audioPlayer.setVolume(0.0); // Початкова гучність 0
       _audioPlayer.play();
+
+      _fadeInAudio(targetVolume: 0.5, duration: Duration(seconds: 3));
     } catch (e) {
       debugPrint("Error playing audio: $e");
     }
+  }
+
+  void _fadeInAudio(
+      {double targetVolume = 1.0,
+      Duration duration = const Duration(seconds: 2)}) {
+    const int steps = 20;
+    final double stepVolume = targetVolume / steps;
+    final int stepDurationMs = (duration.inMilliseconds / steps).round();
+    double currentVolume = 0.0;
+
+    Timer.periodic(Duration(milliseconds: stepDurationMs), (timer) {
+      currentVolume += stepVolume;
+      if (currentVolume >= targetVolume) {
+        _audioPlayer.setVolume(targetVolume);
+        timer.cancel();
+      } else {
+        _audioPlayer.setVolume(currentVolume);
+      }
+    });
   }
 
   void _startPulsing() {
