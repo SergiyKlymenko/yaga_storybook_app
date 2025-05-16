@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -29,10 +30,24 @@ class _HomeScreenState extends State<HomeScreen>
   final fb_link_in = dotenv.env['FB_LINK_IN'];
   final fb_link_out = dotenv.env['FB_LINK_OUT'];
 
+  late final AudioPlayer _audioPlayer;
+
   @override
   void initState() {
     super.initState();
+    _audioPlayer = AudioPlayer();
     _startPulsing();
+    _playBackgroundMusic();
+  }
+
+  void _playBackgroundMusic() async {
+    try {
+      await _audioPlayer.setAsset('assets/sounds/book_cover.mp3');
+      await _audioPlayer.setVolume(0.8);
+      _audioPlayer.play();
+    } catch (e) {
+      debugPrint("Error playing audio: $e");
+    }
   }
 
   void _startPulsing() {
@@ -60,6 +75,13 @@ class _HomeScreenState extends State<HomeScreen>
     if (!await launchUrl(uri, mode: LaunchMode.externalApplication)) {
       debugPrint('Could not launch $url');
     }
+  }
+
+  @override
+  void dispose() {
+    _audioPlayer.stop();
+    _audioPlayer.dispose();
+    super.dispose();
   }
 
   @override
@@ -149,7 +171,9 @@ class _HomeScreenState extends State<HomeScreen>
                 ),
                 Spacer(flex: 4),
                 MagicButton(
-                  onPressed: () {
+                  onPressed: () async {
+                    await _audioPlayer
+                        .stop(); // Зупиняємо аудіо перед переходом
                     Navigator.push(
                       context,
                       MaterialPageRoute(

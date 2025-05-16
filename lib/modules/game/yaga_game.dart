@@ -1,14 +1,16 @@
+import 'dart:math';
 import 'dart:ui';
+
 import 'package:flame/camera.dart';
+import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/effects.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 import 'package:flame/input.dart';
-import 'package:flame/collisions.dart';
 import 'package:flame/text.dart';
+import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/material.dart';
-import 'dart:math';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class YagaGame extends FlameGame with TapDetector, HasCollisionDetection {
@@ -42,14 +44,19 @@ class YagaGame extends FlameGame with TapDetector, HasCollisionDetection {
   final VoidCallback onExit;
   final VoidCallback onGameOver;
   final VoidCallback showRestartButton;
-  final BuildContext context; // Додаємо контекст
+  final BuildContext context;
+  final VoidCallback onStopMusic; // нове
+  final VoidCallback onStartMusic; // нове// Додаємо контекст
 
-  YagaGame(
-      {required this.onExit,
-      required this.onGameOver,
-      required this.showRestartButton,
-      required this.isGameOver,
-      required this.context});
+  YagaGame({
+    required this.onExit,
+    required this.onGameOver,
+    required this.onStopMusic,
+    required this.onStartMusic,
+    required this.showRestartButton,
+    required this.isGameOver,
+    required this.context,
+  });
 
   void updateScoreText() {
     scoreText.text = AppLocalizations.of(context)!.points + ': $score';
@@ -272,6 +279,8 @@ class YagaGame extends FlameGame with TapDetector, HasCollisionDetection {
   }
 
   void gameOver() {
+    if (isGameOver) return;
+
     isGameOver = true;
 
     // Зупиняємо таймери
@@ -283,9 +292,6 @@ class YagaGame extends FlameGame with TapDetector, HasCollisionDetection {
     if (gameOverText == null) {
       gameOverText = TextComponent(
         text: AppLocalizations.of(context)!.gameOver,
-        position: Vector2(size.x * 0.5, size.y * 0.25),
-        anchor: Anchor.center,
-        priority: 20,
         textRenderer: TextPaint(
           style: TextStyle(
             fontSize: size.x * 0.05, // адаптивний шрифт
@@ -301,20 +307,25 @@ class YagaGame extends FlameGame with TapDetector, HasCollisionDetection {
     if (scoreDisplayText == null) {
       scoreDisplayText = TextComponent(
         text: AppLocalizations.of(context)!.points + ': $score',
-        position: Vector2(size.x * 0.5, size.y * 0.35),
-        anchor: Anchor.center,
-        priority: 20,
         textRenderer: TextPaint(
           style: TextStyle(
             fontSize: size.x * 0.03,
             color: Color(0xFFFFF59D),
           ),
         ),
-      );
+        priority: 20,
+      )
+        ..anchor = Anchor.center
+        ..position = Vector2(size.x * 0.5 + 60, size.y * 0.35);
+
       add(scoreDisplayText!);
     }
 
+    onStopMusic();
+
     scoreText.removeFromParent();
+
+    FlameAudio.play('game_over.mp3');
 
     onGameOver();
   }
@@ -355,6 +366,8 @@ class YagaGame extends FlameGame with TapDetector, HasCollisionDetection {
     spawnBunnies();
     spawnTrees();
     spawnGTrees();
+
+    onStartMusic();
   }
 }
 
@@ -391,6 +404,8 @@ class SunnyBunny extends PositionComponent with CollisionCallbacks {
         color: const Color(0xFF00FF00),
       );
       game.add(scoreDisplay);
+
+      FlameAudio.play('magic.mp3');
 
       game.remove(this);
     }
@@ -430,6 +445,8 @@ class Tree extends PositionComponent with CollisionCallbacks {
         color: const Color(0xFFFF0000),
       );
       game.add(scoreDisplay);
+
+      FlameAudio.play('umph.mp3');
 
       game.remove(this);
     }
