@@ -1,7 +1,6 @@
 import 'dart:math';
 import 'dart:ui';
 
-import 'package:flame/camera.dart';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/effects.dart';
@@ -30,7 +29,9 @@ class YagaGame extends FlameGame with TapDetector, HasCollisionDetection {
   final List<GTree> gTrees = [];
   final Random random = Random();
 
-  final backgroundWidth = 1400.0;
+  //final backgroundWidth = 1400.0;
+  late double backgroundWidth;
+  late double backgroundHeight;
 
   late TextComponent scoreText;
   int score = 0;
@@ -65,28 +66,33 @@ class YagaGame extends FlameGame with TapDetector, HasCollisionDetection {
     gravity = 700;
     velocity = 0;
 
-    camera.viewport = FixedResolutionViewport(resolution: Vector2(800, 480));
-
+    //camera.viewport = FixedResolutionViewport(resolution: Vector2(800, 480));
     final backgroundSprite = await Sprite.load('game_back.png');
 
-    final backgroundHeight = backgroundWidth *
-        (backgroundSprite.srcSize.y / backgroundSprite.srcSize.x);
+    final screenWidth = size.x;
+    final screenHeight = size.y;
 
-    background1 = SpriteComponent()
-      ..sprite = backgroundSprite
-      ..size = Vector2(backgroundWidth, backgroundHeight)
-      ..position = Vector2(0, 0)
-      ..priority = -10;
+    // Масштабуємо спрайт до повної висоти екрану
+    final scale = size.y / backgroundSprite.srcSize.y;
+    final bgWidth = backgroundSprite.srcSize.x * scale;
+    final bgHeight = size.y;
 
-    background2 = SpriteComponent()
-      ..sprite = backgroundSprite
-      ..size = Vector2(backgroundWidth, backgroundHeight)
-      ..position = Vector2(backgroundWidth, 0)
-      ..priority = -10;
+    backgroundWidth = bgWidth;
+    backgroundHeight = bgHeight;
 
-    await FlameAudio.audioCache.loadAll(['magic.mp3']);
-    await FlameAudio.audioCache.loadAll(['umph.mp3']);
-    await FlameAudio.audioCache.loadAll(['game_over.mp3']);
+    background1 = SpriteComponent(
+      sprite: backgroundSprite,
+      size: Vector2(bgWidth, bgHeight),
+      position: Vector2(0, 0),
+      priority: -10,
+    );
+
+    background2 = SpriteComponent(
+      sprite: backgroundSprite,
+      size: Vector2(bgWidth, bgHeight),
+      position: Vector2(bgWidth, 0),
+      priority: -10,
+    );
 
     add(background1);
     add(background2);
@@ -111,10 +117,13 @@ class YagaGame extends FlameGame with TapDetector, HasCollisionDetection {
       repeat: true,
     )..start();
 
+    final yagaWidth = size.x * 0.2; // 10% ширини
+    final yagaHeight = yagaWidth * 0.8125; // збереження пропорцій (130 / 160)
     yaga = SpriteComponent()
       ..sprite = await Sprite.load('yaga.png')
-      ..size = Vector2(160, 130)
-      ..position = Vector2(80, size.y / 5);
+      ..size = Vector2(yagaWidth, yagaHeight)
+      ..position =
+          Vector2(size.x * 0.08, size.y * 0.2); // 8% справа, 20% зверху
     yaga.add(RectangleHitbox());
     add(yaga);
 
@@ -124,41 +133,42 @@ class YagaGame extends FlameGame with TapDetector, HasCollisionDetection {
       anchor: Anchor.topLeft,
       priority: 10,
     );
+
     add(scoreText);
 
-    spawnBunnies();
+    /* spawnBunnies();
     spawnTrees();
-    spawnGTrees();
+    spawnGTrees(); */
   }
 
   void spawnBunnies() {
-    final bunnySize = 35.0 + random.nextDouble() * 50;
+    final bunnySizeRatio = 0.06 + random.nextDouble() * 0.06; // 3–7% від ширини
+    final bunnySize = size.x * bunnySizeRatio;
     final maxY = size.y - bunnySize;
     final bunnyY = random.nextDouble() * maxY;
-
-    final int points = ((bunnySize - 30) / 6).ceil().clamp(1, 5);
+    final points = (bunnySizeRatio * 100).round();
 
     final sunnyBunny = SunnyBunny(
-      position: Vector2(size.x, bunnyY),
-      size: Vector2(bunnySize, bunnySize),
-      points: points,
-    );
+        position: Vector2(size.x, bunnyY),
+        size: Vector2.all(bunnySize),
+        points: points //(bunnySizeRatio * 100).ceil().clamp(1, 5),
+        );
 
     bunnies.add(sunnyBunny);
     add(sunnyBunny);
   }
 
   void spawnTrees() {
-    final treeSize = 35.0 + random.nextDouble() * 50;
+    final treeSizeRatio = 0.06 + random.nextDouble() * 0.06;
+    final treeSize = size.x * treeSizeRatio;
     final treeY = random.nextDouble() * (size.y - treeSize);
-
-    final int points = ((treeSize - 30) / 6).ceil().clamp(1, 5);
+    final points = (treeSizeRatio * 100).round();
 
     final tree = Tree(
-      position: Vector2(size.x, treeY),
-      size: Vector2(treeSize, treeSize),
-      points: points,
-    );
+        position: Vector2(size.x, treeY),
+        size: Vector2.all(treeSize),
+        points: points //(treeSizeRatio * 100).ceil().clamp(1, 5),
+        );
 
     trees.add(tree);
     add(tree);
@@ -173,20 +183,19 @@ class YagaGame extends FlameGame with TapDetector, HasCollisionDetection {
     ); */
 
     final sprite = await Sprite.load('tree2.png');
-    final scale = 0.2; // або інше значення
+    final scale = size.x * 0.2 / sprite.srcSize.x; // 20% ширини
+    final treeSize = Vector2(
+      sprite.srcSize.x * scale,
+      sprite.srcSize.y * scale,
+    );
 
-    final treeSize =
-        Vector2(sprite.srcSize.x * scale, sprite.srcSize.y * scale);
-
-    final treeY = size.y - treeSize.y;
-    final treePosition = Vector2(size.x, treeY);
+    final treePosition = Vector2(size.x, size.y - treeSize.y);
 
     final gTree = GTree(
       position: treePosition,
       size: treeSize,
       sprite: sprite,
     );
-
     gTrees.add(gTree);
     add(gTree);
   }
@@ -209,10 +218,10 @@ class YagaGame extends FlameGame with TapDetector, HasCollisionDetection {
       background1.x -= scrollSpeed * dt;
       background2.x -= scrollSpeed * dt;
 
-      if (background1.x <= -backgroundWidth) {
+      if (background1.x + backgroundWidth <= 0) {
         background1.x = background2.x + backgroundWidth;
       }
-      if (background2.x <= -backgroundWidth) {
+      if (background2.x + backgroundWidth <= 0) {
         background2.x = background1.x + backgroundWidth;
       }
 
@@ -284,15 +293,12 @@ class YagaGame extends FlameGame with TapDetector, HasCollisionDetection {
         text: AppLocalizations.of(context)!.gameOver,
         textRenderer: TextPaint(
           style: TextStyle(
-            fontSize: 40,
+            fontSize: size.x * 0.05, // адаптивний шрифт
             color: Colors.white,
             fontWeight: FontWeight.bold,
           ),
         ),
-        priority: 20,
-      )
-        ..anchor = Anchor.center
-        ..position = Vector2(size.x * 0.5 + 60, size.y * 0.25);
+      );
 
       add(gameOverText!);
     }
@@ -302,7 +308,7 @@ class YagaGame extends FlameGame with TapDetector, HasCollisionDetection {
         text: AppLocalizations.of(context)!.points + ': $score',
         textRenderer: TextPaint(
           style: TextStyle(
-            fontSize: 30,
+            fontSize: size.x * 0.03,
             color: Color(0xFFFFF59D),
           ),
         ),

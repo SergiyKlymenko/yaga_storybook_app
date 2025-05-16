@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flame/game.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:just_audio/just_audio.dart'; // Додаємо імпорт для just_audio
+import 'package:just_audio/just_audio.dart';
 import 'package:yaga_storybook_app/screens/home_screen.dart';
 import '../modules/game/yaga_game.dart';
 import '../widgets/magic_button.dart';
@@ -32,7 +32,7 @@ class _YagaGameScreenState extends State<YagaGameScreen> {
     _audioPlayer = AudioPlayer();
     _audioPlayer.setAsset('assets/sounds/game_soundtrack.mp3').then((_) {
       _audioPlayer.setLoopMode(LoopMode.one);
-      _audioPlayer.setVolume(0.7);
+      _audioPlayer.setVolume(0.5);
       _audioPlayer.play();
     }).catchError((e) {
       debugPrint('❌ Failed to load audio asset: $e');

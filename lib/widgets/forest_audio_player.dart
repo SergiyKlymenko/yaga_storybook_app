@@ -15,6 +15,7 @@ class ForestAudioPlayer {
     if (!_isInitialized) {
       await _player.setAsset('assets/sounds/forest_sound.wav');
       _player.setLoopMode(LoopMode.one);
+      _player.setVolume(0.3);
       _player.play();
       _isInitialized = true;
     }
@@ -25,7 +26,7 @@ class ForestAudioPlayer {
   }
 
   void unmute() {
-    _player.setVolume(0.2);
+    _player.setVolume(0.3);
   }
 
   Future<void> dispose() async {
