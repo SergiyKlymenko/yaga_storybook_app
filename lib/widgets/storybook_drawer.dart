@@ -32,6 +32,7 @@ class StorybookDrawer extends StatelessWidget {
 
     return Drawer(
       child: Container(
+        width: MediaQuery.of(context).size.width * 0.6, // 60% ширини екрана
         decoration: const BoxDecoration(
           gradient: LinearGradient(
             colors: [
