@@ -43,7 +43,8 @@ class _HomeScreenState extends State<HomeScreen>
   void _playBackgroundMusic() async {
     try {
       await _audioPlayer.setAsset('assets/sounds/book_cover.mp3');
-      await _audioPlayer.setVolume(0.8);
+      _audioPlayer.setLoopMode(LoopMode.one);
+      await _audioPlayer.setVolume(0.5);
       _audioPlayer.play();
     } catch (e) {
       debugPrint("Error playing audio: $e");
