@@ -49,7 +49,7 @@ class _HomeScreenState extends State<HomeScreen>
       await _audioPlayer.setVolume(0.0); // Початкова гучність 0
       _audioPlayer.play();
 
-      _fadeInAudio(targetVolume: 0.5, duration: Duration(seconds: 3));
+      _fadeInAudio(targetVolume: 0.3, duration: Duration(seconds: 3));
     } catch (e) {
       debugPrint("Error playing audio: $e");
     }
